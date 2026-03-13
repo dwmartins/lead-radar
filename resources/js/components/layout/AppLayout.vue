@@ -1,7 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'primevue/usetoast'
 import Button from 'primevue/button'
 import Avatar from 'primevue/avatar'
 import Tag from 'primevue/tag'
@@ -9,6 +8,7 @@ import Drawer from 'primevue/drawer'
 import NavItem from '../ui/NavItem.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { isAdmin } from '@/helpers/auth'
+import Menu from 'primevue/menu'
 
 const auth           = useAuthStore()
 const router         = useRouter()
@@ -16,6 +16,8 @@ const route          = useRoute()
 
 const sidebarCollapsed = ref(false)
 const mobileSidebar    = ref(false)
+const menuItems        = ref([]);
+const menu             = ref();
 
 const avatarLabel = computed(() =>
     auth.user?.name?.charAt(0)?.toUpperCase() ?? 'U'
@@ -31,7 +33,34 @@ const pageTitles = {
     'admin.leads':    'Todos os Leads',
 }
 
-const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar')
+const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar');
+
+onMounted(() => {
+    setMenuItens();
+});
+
+const toggleMenu = (event) => menu.value.toggle(event);
+
+const setMenuItens = () => {
+    const items = [
+        { label: 'Perfil', icon: 'pi pi-user', command: () => router.push({name: 'user.profile'}) },
+    ];
+
+    items.push({ separator: true });
+
+    items.push({
+        label: 'Sair',
+        icon: 'pi pi-sign-out',
+        command: async () => {
+            await logout();
+        }
+    });
+
+    menuItems.value = items;
+}
+
+const logout = async () => {}
+
 </script>
 
 <template>
@@ -56,15 +85,15 @@ const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar')
 
             <nav class="sidebar-nav">
                 <template v-if="!isAdmin()">
-                    <NavItem to="/"        icon="pi-home"        label="Dashboard"   :collapsed="sidebarCollapsed" />
-                    <NavItem to="/app/search"  icon="pi-search"      label="Buscar Leads" :collapsed="sidebarCollapsed" />
-                    <NavItem to="/app/leads"   icon="pi-list"        label="Meus Leads"  :collapsed="sidebarCollapsed" />
+                    <NavItem to="/"        icon="pi-home"   label="Dashboard"   :collapsed="sidebarCollapsed" />
+                    <NavItem to="/search"  icon="pi-search" label="Buscar Leads" :collapsed="sidebarCollapsed" />
+                    <NavItem to="/leads"   icon="pi-list"   label="Meus Leads"  :collapsed="sidebarCollapsed" />
                 </template>
                 <template v-else>
-                    <NavItem to="/admin/dashboard"        icon="pi-chart-bar"  label="Dashboard"  :collapsed="sidebarCollapsed" />
-                    <NavItem to="/app/admin/users"  icon="pi-users"      label="Usuários"   :collapsed="sidebarCollapsed" />
-                    <NavItem to="/app/admin/plans"  icon="pi-credit-card" label="Planos"    :collapsed="sidebarCollapsed" />
-                    <NavItem to="/app/admin/leads"  icon="pi-database"   label="Todos Leads" :collapsed="sidebarCollapsed" />
+                    <NavItem to="/admin/dashboard"  icon="pi-chart-bar"   label="Dashboard"  :collapsed="sidebarCollapsed" />
+                    <NavItem to="/admin/users"      icon="pi-users"       label="Usuários"   :collapsed="sidebarCollapsed" />
+                    <NavItem to="/admin/plans"      icon="pi-credit-card" label="Planos"    :collapsed="sidebarCollapsed" />
+                    <NavItem to="/admin/leads"      icon="pi-database"    label="Todos Leads" :collapsed="sidebarCollapsed" />
                 </template>
             </nav>
 
@@ -92,13 +121,33 @@ const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar')
             <!-- Topbar (mobile) -->
             <header class="topbar">
                 <Button icon="pi pi-bars" text rounded @click="mobileSidebar = true" class="d-md-none" />
+
                 <h2 class="page-title">{{ pageTitle }}</h2>
+
                 <div class="topbar-right">
                     <Tag v-if="!auth.isAdmin && auth.user?.stats" severity="info" class="quota-tag">
                         <i class="pi pi-chart-pie me-1" />
                         {{ auth.user.stats.leads_used }}/{{ auth.user.stats.leads_limit }} leads
                     </Tag>
-                    <Avatar :label="avatarLabel" shape="circle" class="topbar-avatar" />
+
+                    <div class="d-flex align-items-center gap-2">
+                        <Button @click="toggleMenu" class="p-0" severity="secondary" text>
+                            <div class="d-flex align-items-center gap-2">
+                                <Avatar
+                                    :image="auth.user.avatar_url"
+                                    shape="circle"
+                                    class="border"
+                                    size="normal"
+                                />
+                                <div class="d-flex flex-column align-items-start user_name">
+                                    <span>{{ auth.user.name }}</span>
+                                    <small class="fs-8">{{ auth.getRole()}}</small>
+                                </div>
+                                <i class="pi pi-angle-down"></i>
+                            </div>
+                        </Button>
+                        <Menu ref="menu" :model="menuItems" popup />
+                    </div>
                 </div>
             </header>
 
@@ -114,15 +163,15 @@ const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar')
             </template>
             <nav class="sidebar-nav mobile-nav">
                 <template v-if="!isAdmin()">
-                    <NavItem to="/app/"        icon="pi-home"         label="Dashboard"    @click="mobileSidebar = false" />
-                    <NavItem to="/app/search"  icon="pi-search"       label="Buscar Leads" @click="mobileSidebar = false" />
-                    <NavItem to="/app/leads"   icon="pi-list"         label="Meus Leads"   @click="mobileSidebar = false" />
+                    <NavItem to="/"        icon="pi-home"         label="Dashboard"    @click="mobileSidebar = false" />
+                    <NavItem to="/search"  icon="pi-search"       label="Buscar Leads" @click="mobileSidebar = false" />
+                    <NavItem to="/leads"   icon="pi-list"         label="Meus Leads"   @click="mobileSidebar = false" />
                 </template>
                 <template v-else>
-                    <NavItem to="/app/admin"        icon="pi-chart-bar"   label="Dashboard"   @click="mobileSidebar = false" />
-                    <NavItem to="/app/admin/users"  icon="pi-users"       label="Usuários"    @click="mobileSidebar = false" />
-                    <NavItem to="/app/admin/plans"  icon="pi-credit-card" label="Planos"      @click="mobileSidebar = false" />
-                    <NavItem to="/app/admin/leads"  icon="pi-database"    label="Todos Leads" @click="mobileSidebar = false" />
+                    <NavItem to="/admin"        icon="pi-chart-bar"   label="Dashboard"   @click="mobileSidebar = false" />
+                    <NavItem to="/admin/users"  icon="pi-users"       label="Usuários"    @click="mobileSidebar = false" />
+                    <NavItem to="/admin/plans"  icon="pi-credit-card" label="Planos"      @click="mobileSidebar = false" />
+                    <NavItem to="/admin/leads"  icon="pi-database"    label="Todos Leads" @click="mobileSidebar = false" />
                 </template>
             </nav>
         </Drawer>

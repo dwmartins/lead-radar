@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
         role: null,
         plan_id: null,
         email_verified_at: null,
+        avatar_url: null
     });
 
     const isLoggedIn = ref(false);
