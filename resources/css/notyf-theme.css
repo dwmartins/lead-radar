@@ -1,0 +1,28 @@
+.notyf__toast--success{
+    background-color: #48c78e !important; /* Verde Huro */
+    color: #fff !important;
+}
+
+.notyf__toast--error{
+    background-color: #f14668 !important; /* Vermelho Huro */
+    color: #fff !important;
+}
+
+.notyf-info {
+    background-color: #209cee !important; /* Azul Huro */
+    color: #fff !important;
+}
+
+.notyf-warning {
+    background-color: #ffdd57 !important; /* Amarelo Huro */
+    color: #000 !important;
+}
+
+.notyf__toast {
+    border-radius: 6px !important;
+    max-width: 423px;
+}
+
+.notyf__icon {
+    color: currentColor !important;
+}
