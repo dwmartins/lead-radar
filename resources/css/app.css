@@ -118,6 +118,10 @@ html.dark-mode .bg-white {
     color: var(--primary-color) !important;
 }
 
+html.dark-mode .text-muted {
+    color: #c8d8e7bf !important;
+}
+
 .item-center {
     display: flex;
     justify-content: center;
@@ -332,8 +336,7 @@ a:hover {
 
 .topbar {
     height: var(--topbar-height);
-    background: var(--p-surface-card, #fff);
-    border-bottom: 1px solid var(--p-surface-border, #e2e8f0);
+    border-bottom: 1px solid #8a8a8a2d;
     display: flex;
     align-items: center;
     padding: 0 1.5rem;

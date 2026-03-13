@@ -9,15 +9,18 @@ import NavItem from '../ui/NavItem.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { isAdmin } from '@/helpers/auth'
 import Menu from 'primevue/menu'
+import { useThemeStore } from '@/stores/themeStore'
 
 const auth           = useAuthStore()
 const router         = useRouter()
 const route          = useRoute()
+const theme          = useThemeStore();
 
 const sidebarCollapsed = ref(false)
 const mobileSidebar    = ref(false)
 const menuItems        = ref([]);
 const menu             = ref();
+const isDarkMode       = ref(false);
 
 const avatarLabel = computed(() =>
     auth.user?.name?.charAt(0)?.toUpperCase() ?? 'U'
@@ -57,6 +60,11 @@ const setMenuItens = () => {
     });
 
     menuItems.value = items;
+}
+
+const changeTheme = () => {
+    theme.toggleTheme();
+    isDarkMode.value = !isDarkMode.value;
 }
 
 const logout = async () => {}
@@ -131,6 +139,16 @@ const logout = async () => {}
                     </Tag>
 
                     <div class="d-flex align-items-center gap-2">
+                        <Button 
+                            :icon="isDarkMode ? 'pi pi-moon' : 'pi pi-sun'" 
+                            variant="text" 
+                            aria-label="Filter" 
+                            severity="secondary"
+                            size="large"
+                            rounded
+                            @click="changeTheme"
+                        />
+
                         <Button @click="toggleMenu" class="p-0" severity="secondary" text>
                             <div class="d-flex align-items-center gap-2">
                                 <Avatar
