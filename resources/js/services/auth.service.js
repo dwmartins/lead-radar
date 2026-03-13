@@ -30,6 +30,33 @@ export default {
             };
         }
     },
+    
+    /**
+     * Realiza o login do usuário.
+     *
+     * @param {Object} userData
+     * @param {string} userData.email - E-mail do usuário
+     * @param {string} userData.password - Senha do usuário
+     * @param {boolean} userData.remember_me - Mantém a sessão ativa
+     *
+     * @returns {Promise<{ message: string, user: Object|null }>}
+     */
+    async login(userData) {
+        try {
+            // Gerar o CSRF antes do login
+            await axios.get(`/sanctum/csrf-cookie`, {
+                withCredentials: true
+            });
+
+            const { data } = await axios.post(`${API_URL}/login`, userData);
+            this.setUserAuthenticate(data.user);
+            this.addSettingsToAxios();
+            return data;
+        } catch (error) {
+            this.clearAuth();
+            throw error;
+        }
+    },
 
     /**
      * Atualiza o usuário autenticado.

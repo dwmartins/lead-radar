@@ -60,10 +60,6 @@ router.beforeEach(async (to, from) => {
         }
     }
 
-    if(to.name === 'condominium-invite' && userStore.isAuthenticate()) {
-        return redirectToDashboard();
-    }
-
     /**
      * - Todas as rotas /app exigem autenticação.
      * - Na entrada inicial ou refresh, valida a sessão no backend.
@@ -89,8 +85,8 @@ router.beforeEach(async (to, from) => {
 });
 
 function redirectToDashboard() {
-    if(isAdmin()) return { path: '/app/admin/dashboard' }
-    if(isUser()) return { path: '/app/usuario/dashboard' }
+    if(isAdmin()) return { path: '/app/admin' }
+    if(isUser()) return { path: '/app' }
     
     return true;
 }
