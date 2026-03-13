@@ -12,7 +12,6 @@ import authService from '@/services/auth.service';
 import { isAdmin } from '@/helpers/auth';
 import { validateForm } from '@/helpers/validations';
 
-const auth   = useAuthStore();
 const router = useRouter();
 const route  = useRoute();
 
@@ -48,7 +47,7 @@ const onSubmit = async () => {
         loading.value = true;
         await authService.login(form);
 
-        const redirect = route.query.redirect || (isAdmin() ? '/app/admin' : '/');
+        const redirect = route.query.redirect || (isAdmin() ? '/admin/dashboard' : '/dashboard');
         router.push(redirect);
     } catch (error) {
         showAlert('error', error.response?.data);

@@ -49,6 +49,9 @@ export default {
             });
 
             const { data } = await axios.post(`${API_URL}/login`, userData);
+
+            localStorage.setItem('last_email', userData.email);
+
             this.setUserAuthenticate(data.user);
             this.addSettingsToAxios();
             return data;
@@ -65,6 +68,7 @@ export default {
     setUserAuthenticate(user) {
         const authStore = useAuthStore();
         authStore.update(user);
+        authStore.setIsAuthenticate(true);
     },
 
     /**

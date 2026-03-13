@@ -4,22 +4,32 @@ import authService from '@/services/auth.service';
 import { useAuthStore } from '@/stores/authStore';
 import { pageLoadingStore } from '@/stores/pageLoadingStore';
 import { createRouter, createWebHistory } from 'vue-router';
+import admin from './admin';
 
+const RootRedirect  = () => import('@/pages/RootRedirect.vue');
 const LoginPage     = () => import('@/pages/LoginPage.vue');
 const NotFoundPage  = () => import('@/pages/NotFoundPage.vue');
 
 const routes = [
     {
+        path: '/',
+        name: 'root',
+        component: RootRedirect
+    },
+    {
         path: '/entrar',
         name: 'login',
         component: LoginPage
     },
+
+    ...admin,
+
     {
         path: '/:pathMatch(.*)*',
         name: 'not-found-page',
         component: NotFoundPage,
         meta: { title: "Página não encontrada" }
-    },
+    }
 ];
 
 const router = createRouter({
@@ -37,26 +47,23 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
     document.title = to.meta.title || APP_NAME;
 
-    const userStore = useAuthStore();
+    const authStore = useAuthStore();
 
-    if (to.path === '/') {
-        return redirectToDashboard();
-    }
-
-    if(to.path === '/entrar') {
-        if (!userStore.isAuthenticate()) {
-            pageLoadingStore.show();
-            const result = await authService.validate();
-            pageLoadingStore.hide();
-
-            if(result.is_valid) {
-               return redirectToDashboard();
-            }
+    /**
+     * Página de login
+     */
+    if(to.name === 'login') {
+        // Se usuário já autenticado, redireciona
+        if (authStore.isAuthenticate()) {
+            return redirectToDashboard(to);
         }
 
-        // Se usuário já autenticado, redireciona
-        if (userStore.isAuthenticate()) {
-            return redirectToDashboard();
+        pageLoadingStore.show();
+        const result = await authService.validate();
+        pageLoadingStore.hide();
+
+        if(result.is_valid) {
+            return redirectToDashboard(to);
         }
     }
 
@@ -65,10 +72,10 @@ router.beforeEach(async (to, from) => {
      * - Na entrada inicial ou refresh, valida a sessão no backend.
      * - Em navegação interna, usa apenas o estado local.
      */
-    if(to.path.startsWith('/app')) {
-        const fromOutsideApp = !from.path.startsWith('/app') || !from.matched.length;
+    if(to.meta.requiresAuth) {
+        const fromOutside = !authStore.isAuthenticate();
 
-        if(fromOutsideApp) {
+        if(fromOutside) {
             pageLoadingStore.show();
             const result = await authService.validate();
             pageLoadingStore.hide();
@@ -76,23 +83,28 @@ router.beforeEach(async (to, from) => {
             if(!result.is_valid) {
                 return { name: 'login' }
             }
-
-            return validateRoute(to);
-        } else {
-            return userStore.isAuthenticate() ? validateRoute(to) : { name: 'login' }
         }
+
+        return validateRoute(to);
     }
 });
 
-function redirectToDashboard() {
-    if(isAdmin()) return { path: '/app/admin' }
-    if(isUser()) return { path: '/app' }
-    
-    return true;
+function redirectToDashboard(to) {
+    if(isAdmin() && to.path !== '/admin/dashboard') {
+        return { path: '/admin/dashboard' }
+    }
+
+    if(isUser() && to.path !== '/dashboard') {
+        return { path: '/dashboard' }
+    }
+
+    return true
 }
 
 function validateRoute(to) {
-    if(isAdmin()) return true;
+    if(to.meta.requireAdmin && !isAdmin()) {
+        return redirectToDashboard();
+    }
 
     return true;
 }

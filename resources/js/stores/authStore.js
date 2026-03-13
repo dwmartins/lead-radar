@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
         email_verified_at: null,
     });
 
-    const isLoggedIn = computed(() => !!user.value);
+    const isLoggedIn = ref(false);
 
     /**
      * Retorna os dados do usuário autenticado
@@ -22,11 +22,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     /**
+     * Altera o status de logado
+     * @param {Boolean} value
+     */
+    function setIsAuthenticate(value) {
+        isLoggedIn.value = value
+    }
+
+    /**
      * Retorna se o usuário está autenticado.
      * @returns {boolean}
      */
     function isAuthenticate() {
-        return isLoggedIn;
+        return isLoggedIn.value;
     }
 
     /**
@@ -59,6 +67,8 @@ export const useAuthStore = defineStore('auth', () => {
         Object.keys(user).forEach(key => {
             user[key] = null;
         });
+
+        setIsAuthenticate(false);
     }
 
     /**
@@ -73,6 +83,7 @@ export const useAuthStore = defineStore('auth', () => {
         user,
         getUser,
         isAuthenticate,
+        setIsAuthenticate,
         update,
         updateAvatar,
         clean,
