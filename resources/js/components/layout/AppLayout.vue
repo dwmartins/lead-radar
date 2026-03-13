@@ -56,12 +56,12 @@ const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar')
 
             <nav class="sidebar-nav">
                 <template v-if="!isAdmin()">
-                    <NavItem to="/app"        icon="pi-home"        label="Dashboard"   :collapsed="sidebarCollapsed" />
+                    <NavItem to="/"        icon="pi-home"        label="Dashboard"   :collapsed="sidebarCollapsed" />
                     <NavItem to="/app/search"  icon="pi-search"      label="Buscar Leads" :collapsed="sidebarCollapsed" />
                     <NavItem to="/app/leads"   icon="pi-list"        label="Meus Leads"  :collapsed="sidebarCollapsed" />
                 </template>
                 <template v-else>
-                    <NavItem to="/app/admin"        icon="pi-chart-bar"  label="Dashboard"  :collapsed="sidebarCollapsed" />
+                    <NavItem to="/admin/dashboard"        icon="pi-chart-bar"  label="Dashboard"  :collapsed="sidebarCollapsed" />
                     <NavItem to="/app/admin/users"  icon="pi-users"      label="Usuários"   :collapsed="sidebarCollapsed" />
                     <NavItem to="/app/admin/plans"  icon="pi-credit-card" label="Planos"    :collapsed="sidebarCollapsed" />
                     <NavItem to="/app/admin/leads"  icon="pi-database"   label="Todos Leads" :collapsed="sidebarCollapsed" />
@@ -108,7 +108,7 @@ const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar')
         </div>
 
         <!-- Mobile Sidebar Drawer -->
-        <Drawer v-model:visible="mobileSidebar" position="left" :modal="true" class="mobile-drawer">
+        <Drawer v-model:visible="mobileSidebar" position="left" :modal="true" class="mobile-drawer border-0">
             <template #header>
                 <span class="brand-name">🎯 LeadRadar</span>
             </template>
@@ -128,224 +128,3 @@ const pageTitle = computed(() => pageTitles[route.name] ?? 'LeadRadar')
         </Drawer>
     </div>
 </template>
-
-<style scoped>
-:root {
-    --sidebar-width:           240px;
-    --sidebar-collapsed-width: 68px;
-    --topbar-height:           60px;
-
-    --color-sidebar-bg:    #0f172a;
-    --color-sidebar-hover: rgba(255,255,255,.07);
-    --color-sidebar-active:rgba(99,102,241,.2);
-    --color-sidebar-border:rgba(255,255,255,.06);
-}
-
-.layout-wrapper {
-    --sidebar-width:           240px;
-    --sidebar-collapsed-width: 68px;
-    --topbar-height:           60px;
-
-    --color-sidebar-bg:    #0f172a;
-    --color-sidebar-hover: rgba(255,255,255,.07);
-    --color-sidebar-active:rgba(99,102,241,.2);
-    --color-sidebar-border:rgba(255,255,255,.06);
-    display: flex;
-    min-height: 100vh;
-}
-
-.layout-wrapper.sidebar-collapsed .sidebar {
-    width: var(--sidebar-collapsed-width);
-}
-
-.layout-wrapper.sidebar-collapsed .layout-main {
-    margin-left: var(--sidebar-collapsed-width);
-}
-
-.sidebar {
-    width: var(--sidebar-width);
-    min-height: 100vh;
-    background: var(--color-sidebar-bg) !important;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    transition: width var(--transition);
-    border-right: 1px solid var(--color-sidebar-border);
-}
-
-.sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem .875rem;
-    border-bottom: 1px solid var(--color-sidebar-border);
-    min-height: var(--topbar-height);
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    text-decoration: none;
-    overflow: hidden;
-}
-
-.brand-icon {
-    font-size: 1.4rem;
-    flex-shrink: 0;
-}
-
-.brand-name {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    white-space: nowrap;
-    letter-spacing: -.3px;
-}
-
-.collapse-btn {
-    color: rgba(255,255,255,.4) !important;
-    flex-shrink: 0;
-}
-
-.sidebar-nav {
-    flex: 1;
-    padding: .75rem .5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    overflow-x: hidden;
-}
-
-.sidebar-footer {
-    padding: .75rem .5rem;
-    border-top: 1px solid var(--color-sidebar-border);
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    padding: .5rem .75rem;
-    margin-bottom: .4rem;
-    overflow: hidden;
-}
-
-.user-avatar {
-    background: var(--color-indigo) !important;
-    color: #fff !important;
-    flex-shrink: 0;
-}
-
-.user-meta {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.user-name {
-    font-size: .875rem;
-    font-weight: 600;
-    color: rgba(255,255,255,.9);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.user-role {
-    font-size: .75rem;
-    color: rgba(255,255,255,.4);
-}
-
-.logout-btn {
-    width: 100%;
-    justify-content: flex-start !important;
-    padding: .6rem .75rem !important;
-    color: rgba(255,255,255,.5) !important;
-    border-radius: 10px !important;
-}
-
-.logout-btn:hover {
-    background: var(--color-sidebar-hover) !important;
-    color: rgba(255,255,255,.8) !important;
-}
-
-.layout-main {
-    flex: 1;
-    margin-left: var(--sidebar-width);
-    transition: margin-left var(--transition);
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.topbar {
-    height: var(--topbar-height);
-    background: var(--p-surface-card, #fff);
-    border-bottom: 1px solid var(--p-surface-border, #e2e8f0);
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
-    gap: 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-}
-
-.page-title {
-    font-size: 1rem;
-    font-weight: 600;
-    flex: 1;
-    margin: 0;
-}
-
-.topbar-right {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    margin-left: auto;
-}
-
-.topbar-avatar {
-    cursor: pointer;
-}
-
-.page-content {
-    flex: 1;
-    padding: 1.5rem;
-}
-
-.mobile-nav {
-    background: transparent !important;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity var(--transition);
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
-
-@media (max-width: 768px) {
-
-    .sidebar {
-        transform: translateX(-100%);
-        pointer-events: none;
-    }
-
-    .layout-main {
-        margin-left: 0 !important;
-    }
-
-    .page-content {
-        padding: 1rem;
-    }
-
-}
-</style>
