@@ -10,6 +10,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { showAlert } from '@/helpers/alert';
 import authService from '@/services/auth.service';
 import { isAdmin } from '@/helpers/auth';
+import { validateForm } from '@/helpers/validations';
 
 const auth   = useAuthStore();
 const router = useRouter();
@@ -36,6 +37,13 @@ onMounted(() => {
 });
 
 const onSubmit = async () => {
+    const required_fields = [
+        {id: 'email', label: 'E-mail', empty_message: 'O e-mail é obrigatório'},
+        {id: 'password', label: 'Senha', empty_message: 'A senha é obrigatória'}
+    ];
+
+    if(!validateForm(form, required_fields, fieldErrors)) return;
+
     try {
         loading.value = true;
         await authService.login(form);
