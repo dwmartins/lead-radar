@@ -6,15 +6,13 @@ import { pageLoadingStore } from '@/stores/pageLoadingStore';
 import { createRouter, createWebHistory } from 'vue-router';
 import admin from './admin';
 
-const RootRedirect  = () => import('@/pages/RootRedirect.vue');
-const LoginPage     = () => import('@/pages/LoginPage.vue');
-const NotFoundPage  = () => import('@/pages/NotFoundPage.vue');
+const LoginPage    = () => import('@/pages/LoginPage.vue');
+const NotFoundPage = () => import('@/pages/NotFoundPage.vue');
 
 const routes = [
     {
         path: '/',
-        name: 'root',
-        component: RootRedirect
+        redirect: '/login'
     },
     {
         path: '/login',
@@ -27,7 +25,7 @@ const routes = [
     {
         path: '/:pathMatch(.*)*',
         name: 'not-found-page',
-        component: NotFoundPage,
+        component: NotFoundPage
     }
 ];
 
@@ -43,69 +41,42 @@ const router = createRouter({
     }
 }); 
 
-router.beforeEach(async (to, from) => {
-    document.title = to.meta.title || APP_NAME;
+router.beforeEach(async (to) => {
+    document.title = to.meta.title || APP_NAME
 
-    const authStore = useAuthStore();
+    const auth = useAuthStore()
+    const logged = auth.isAuthenticate()
 
-    /**
-     * Página de login
-     */
-    if(to.name === 'login') {
-        // Se usuário já autenticado, redireciona
-        if (authStore.isAuthenticate()) {
-            return redirectToDashboard(to);
+    if (to.name === 'login') {
+        if (logged || await validateSession()) {
+            return redirectToDashboard()
         }
-
-        pageLoadingStore.show();
-        const result = await authService.validate();
-        pageLoadingStore.hide();
-
-        if(result.is_valid) {
-            return redirectToDashboard(to);
-        }
+        return true
     }
 
-    /**
-     * - Todas as rotas /app exigem autenticação.
-     * - Na entrada inicial ou refresh, valida a sessão no backend.
-     * - Em navegação interna, usa apenas o estado local.
-     */
-    if(to.meta.requiresAuth) {
-        const fromOutside = !authStore.isAuthenticate();
-
-        if(fromOutside) {
-            pageLoadingStore.show();
-            const result = await authService.validate();
-            pageLoadingStore.hide();
-
-            if(!result.is_valid) {
-                return { name: 'login' }
-            }
+    if (to.meta.requiresAuth) {
+        if (!logged && !(await validateSession())) {
+            return { name: 'login' }
         }
 
-        return validateRoute(to);
-    }
-});
-
-function redirectToDashboard(to) {
-    if(isAdmin() && to.path !== '/admin/dashboard') {
-        return { path: '/admin/dashboard' }
-    }
-
-    if(isUser() && to.path !== '/dashboard') {
-        return { path: '/dashboard' }
+        if (to.meta.requireAdmin && !isAdmin()) {
+            return redirectToDashboard()
+        }
     }
 
     return true
+})
+
+async function validateSession() {
+    pageLoadingStore.show()
+    const { is_valid } = await authService.validate()
+    pageLoadingStore.hide()
+    return is_valid
 }
 
-function validateRoute(to) {
-    if(to.meta.requireAdmin && !isAdmin()) {
-        return redirectToDashboard();
-    }
-
-    return true;
+function redirectToDashboard() {
+    if (isAdmin()) return { path: '/admin/dashboard' }
+    if (isUser()) return { path: '/dashboard' }
 }
 
-export default router;
+export default router
