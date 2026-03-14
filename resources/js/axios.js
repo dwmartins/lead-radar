@@ -2,6 +2,8 @@ import axios from "axios";
 import authService from "./services/auth.service";
 import router from "./router";
 
+axios.defaults.headers.common['Accept-Language'] = localStorage.getItem('locale') || 'pt';
+
 // Interceptador de resposta para tratar erros globais
 axios.interceptors.response.use(
     response => response,

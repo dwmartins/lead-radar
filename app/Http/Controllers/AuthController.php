@@ -29,7 +29,7 @@ class AuthController extends Controller
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             $seconds = RateLimiter::availableIn($throttleKey);
             return response()->json([
-                'message' => "Muitas tentativas de login. Tente novamente em {$seconds} segundos."
+                'message' => __('auth.throttle', ['throttle' => $seconds])
             ], 429);
         }
 
@@ -39,7 +39,7 @@ class AuthController extends Controller
             RateLimiter::hit($throttleKey);
 
             return response()->json([
-                'message' => 'Credenciais inválidas.'
+                'message' => __('auth.failed')
             ], 401);
         }
 
@@ -52,7 +52,7 @@ class AuthController extends Controller
             $this->forceLogout($request);
 
             return response()->json([
-                'message' => 'Usuário inativo. Entre em contato com o administrador.'
+                'message' => __('auth.inactive_user')
             ]);
         }
 
@@ -60,7 +60,7 @@ class AuthController extends Controller
         $user->updateLastLogin();
 
         return response()->json([
-            'message' => 'Login realizado com sucesso.',
+            'message' => __('auth.login_successful'),
             'user' => $user
         ]);
     }
@@ -79,14 +79,14 @@ class AuthController extends Controller
             $this->forceLogout($request);
 
             return response()->json([
-                'message' => 'Usuário inativo ou sessão inválida.',
+                'message' => __('auth.invalid_session'),
                 'is_valid' => false,
                 'force_logout' => true
             ], 401);
         }
 
         return response()->json([
-            'message'  => 'Usuário autenticado.',
+            'message'  => __('auth.authenticated'),
             'is_valid' => true,
             'user'     => $user
         ]);
@@ -115,7 +115,7 @@ class AuthController extends Controller
         }
         
         return response()->json([
-            'message' => 'Logout realizado com sucesso',
+            'message' => __('auth.logout_successful'),
             'force_logout' => true
         ]);
     }
