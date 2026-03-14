@@ -77,7 +77,10 @@ export const useAuthStore = defineStore('auth', () => {
      * @returns {string} A função de usuário.
      */
     function getRole() {
-        return user.role.charAt(0).toUpperCase() + user.role.slice(1)
+        const role = user?.role;
+        if(!role) return '';
+
+        return role.charAt(0).toUpperCase() + role.slice(1);
     }
 
     return {

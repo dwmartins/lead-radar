@@ -10,6 +10,8 @@ import { useAuthStore } from '@/stores/authStore'
 import { isAdmin } from '@/helpers/auth'
 import Menu from 'primevue/menu'
 import { useThemeStore } from '@/stores/themeStore'
+import authService from '@/services/auth.service'
+import { showAlert } from '@/helpers/alert'
 
 const auth           = useAuthStore()
 const router         = useRouter()
@@ -67,7 +69,15 @@ const changeTheme = () => {
     isDarkMode.value = !isDarkMode.value;
 }
 
-const logout = async () => {}
+const logout = async () => {
+    try {
+        const response = await authService.logout();
+        showAlert('success', response.message);
+        router.push({ name: 'login' });
+    } catch (error) {
+        showAlert('error', error.response?.data);
+    } 
+}
 
 </script>
 
@@ -111,7 +121,7 @@ const logout = async () => {}
                     <Avatar :label="avatarLabel" class="user-avatar" shape="circle" />
                     <div class="user-meta">
                         <span class="user-name">{{ auth.user?.name }}</span>
-                        <span class="user-role">{{ auth.isAdmin ? 'Admin' : auth.user?.plan?.name }}</span>
+                        <span class="user-role">{{ isAdmin() ? 'Admin' : auth.user?.plan?.name }}</span>
                     </div>
                 </div>
                 <Button
@@ -119,7 +129,7 @@ const logout = async () => {}
                     :label="sidebarCollapsed ? '' : 'Sair'"
                     text severity="secondary"
                     class="logout-btn"
-                    @click="handleLogout"
+                    @click="logout()"
                 />
             </div>
         </aside>

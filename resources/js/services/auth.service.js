@@ -94,12 +94,8 @@ export default {
      * @returns {void}
      */
     async logout() {
-        try {
-            const response = await axios.post('/logout');
-            this.clearAuth();
-            return response;
-        } catch (error) {
-            throw error;
-        }
+        const { data } = await axios.post(`${API_URL}/logout`);
+        this.clearAuth()
+        return data
     }
 }

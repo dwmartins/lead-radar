@@ -1,4 +1,7 @@
 import { Notyf } from "notyf";
+import i18n from "@/i18n";
+
+const t = i18n.global.t;
 
 const notyf = new Notyf({
     duration: 4000,
@@ -11,7 +14,9 @@ const notyf = new Notyf({
  * @returns {string} - Mensagem pronta para exibir
  */
 function normalizeMessage(input) {
-    if (!input) return "Ocorreu um erro inesperado.";
+    const general_error = t('messages.general_error');
+
+    if (!input) return general_error;
 
     if (input.errors && typeof input.errors === "object") {
         return Object.values(input.errors)
@@ -24,7 +29,7 @@ function normalizeMessage(input) {
 
     if (typeof input === "string") return input;
 
-    return "Ocorreu um erro inesperado.";
+    return general_error;
 }
 
 /**
