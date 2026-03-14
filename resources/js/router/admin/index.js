@@ -4,7 +4,7 @@ const DashboardPage = () => import('@/pages/admin/DashboardPage.vue');
 
 export default [
     {
-        path: '/admin/dashboard',
+        path: '/admin',
         component: AppLayout,
         meta: { requiresAuth:true, requireAdmin: true},
         children: [
