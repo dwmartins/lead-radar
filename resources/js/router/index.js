@@ -17,7 +17,7 @@ const routes = [
         component: RootRedirect
     },
     {
-        path: '/entrar',
+        path: '/login',
         name: 'login',
         component: LoginPage
     },
@@ -28,7 +28,6 @@ const routes = [
         path: '/:pathMatch(.*)*',
         name: 'not-found-page',
         component: NotFoundPage,
-        meta: { title: "Página não encontrada" }
     }
 ];
 

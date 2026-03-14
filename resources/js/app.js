@@ -12,10 +12,15 @@ import 'bootstrap/dist/css/bootstrap-grid.min.css'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import { initTheme } from './helpers/theme';
-import { pt } from './locales/primevue/pt';
+
+import { pt } from './i18n/primevue/pt';
+import { en } from './i18n/primevue/en'
+
 import Tooltip from 'primevue/tooltip';
 import 'primeicons/primeicons.css';
 import PageLoading from '@/components/shared/PageLoading.vue';
+
+import i18n from './i18n';
 
 const pageLoading = createApp(PageLoading);
 pageLoading.mount('#pageLoading');
@@ -25,6 +30,17 @@ const pinia = createPinia();
 
 app.use(router);
 app.use(pinia);
+app.use(i18n)
+
+const savedLocale = localStorage.getItem('locale')
+const browserLocale = navigator.language.split('-')[0]
+
+const locale = savedLocale || (browserLocale === 'pt' ? 'pt' : 'en')
+
+const primeLocales = {
+    pt,
+    en
+}
 
 app.use(PrimeVue, {
     theme: {
@@ -33,7 +49,7 @@ app.use(PrimeVue, {
             darkModeSelector: '.dark-mode',
         }
     },
-    locale: pt
+    locale: primeLocales[locale]
 });
 
 app.directive('tooltip', Tooltip);

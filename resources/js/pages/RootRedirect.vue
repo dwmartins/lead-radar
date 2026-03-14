@@ -7,10 +7,11 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 onMounted(() => {    
-    if (isAdmin()) router.replace('/admin/dashboard')
-    else if (isUser()) router.replace('/dashboard')
-    else router.replace('/entrar')
-})
+    if (isAdmin()) router.replace({ name: 'admin.dashboard' })
+    else if (isUser()) router.replace({ name: 'dashboard' })
+    else router.replace({ name: 'login' })
+});
+
 </script>
 
 <template>

@@ -4,7 +4,6 @@ import InputText from 'primevue/inputtext';
 import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
-import { useAuthStore } from '@/stores/authStore';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted, reactive, ref } from 'vue';
 import { showAlert } from '@/helpers/alert';
@@ -65,11 +64,11 @@ const onSubmit = async () => {
                 <div class="text-center mb-4">
                     <span class="fs-1">🎯</span>
                     <h1 class="fs-3 mb-1">LeadRadar</h1>
-                    <p class="mt-2 fs-7 text-muted">Acesse sua conta para continuar</p>
+                    <p class="mt-2 fs-7 text-muted">{{ $t('messages.log_your_account') }}</p>
                 </div>
 
                 <div class="field mb-3">
-                    <label for="email">E-mail</label>
+                    <label for="email">{{ $t('messages.email') }}</label>
                     <InputText
                         id="email"
                         v-model="form.email"
@@ -81,7 +80,7 @@ const onSubmit = async () => {
                 </div>
 
                 <div class="field mb-3">
-                    <label for="password">Senha</label>
+                    <label for="password">{{ $t('messages.password') }}</label>
                     <Password
                         id="password"
                         v-model="form.password"
@@ -95,12 +94,12 @@ const onSubmit = async () => {
 
                 <div>
                     <Checkbox v-model="form.remember_me" :binary="true" inputId="remember_me" />
-                    <label for="remember_me" class="ms-2">Lembrar de mim</label>
+                    <label for="remember_me" class="ms-2">{{ $t('messages.remember_me') }}</label>
                 </div>
 
                 <Button
                     type="submit"
-                    label="Entrar"
+                    :label="$t('messages.sign_in')"
                     icon="pi pi-sign-in"
                     :loading="loading"
                     fluid
@@ -111,8 +110,8 @@ const onSubmit = async () => {
             <Divider />
 
             <p class="text-muted">
-                Não tem conta?
-                <router-link to="/registrar" class="text-decoration-none link-primary">Criar conta grátis</router-link>
+                {{ $t('messages.dont_have_account') }}
+                <router-link to="/registrar" class="text-decoration-none link-primary">{{ $t('messages.create_a_free_account') }}</router-link>
             </p>
         </div>
     </section>
