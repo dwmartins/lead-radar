@@ -173,8 +173,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you may specify custom validation messages for attributes using the
-    | convention "attribute.rule" to name the lines. This makes it quick to
-    | specify a specific custom language line for a given attribute rule.
+    | convention "attribute.rule" to name the lines. 
     |
     */
 
@@ -190,14 +189,19 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following language lines are used to swap our attribute placeholder
-    | with something more reader friendly such as "E-Mail Address" instead
-    | of "email". This simply helps us make our message more expressive.
+    | with something more reader friendly such as "E-Mail Address" instead of "email".
     |
     */
 
     'attributes' => [
         'email' => 'Email',
         'password' => 'Password',
+        'id' => 'ID',
+        'name' => 'Name',
+        'last_name' => 'Last_name',
+        'phone' => 'Phone number',
+        'role' => 'Role',
+        'account_status' => 'Account status',
+        'plan_id' => 'Plan ID',
     ],
-
 ];

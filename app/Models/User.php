@@ -125,6 +125,9 @@ class User extends Authenticatable
         return $this->hasMany(Lead::class);
     }
 
+    /**
+     * Relação com Plan
+     */
     public function plan(): BelongsTo
     { 
         return $this->belongsTo(Plan::class); 

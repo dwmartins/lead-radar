@@ -196,6 +196,12 @@ return [
     'attributes' => [
         'email' => 'E-mail',
         'password' => 'Senha',
+        'id' => 'ID',
+        'name' => 'Nome',
+        'last_name' => 'Sobrenome',
+        'phone' => 'Telefone',
+        'role' => 'Função',
+        'account_status' => 'Status da conta',
+        'plan_id' => 'Plano id',
     ],
-
 ];
