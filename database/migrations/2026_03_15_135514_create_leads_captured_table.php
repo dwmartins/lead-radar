@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lead_usages', function (Blueprint $table) {
+        Schema::create('leads_captureds', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->tinyInteger('month');
             $table->smallInteger('year');
-            $table->integer('leads_used')->default(0);
+            $table->integer('leads_captured')->default(0);
             $table->timestamps();
             $table->unique(['user_id', 'month', 'year']);
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lead_usages');
+        Schema::dropIfExists('leads_captured');
     }
 };

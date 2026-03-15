@@ -6,12 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class LeadUsage
- * 
- * @property int     $id
+ * Class LeadCaptured
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $month
+ * @property int $year
+ * @property int $leads_captured
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  */
-class LeadUsage extends Model
+class LeadCaptured extends Model
 {
+    protected $table = 'leads_captureds';
+
     /**
      * Os atributos que podem ser atribuídos em massa.
      *
@@ -21,7 +29,7 @@ class LeadUsage extends Model
         'user_id', 
         'month', 
         'year', 
-        'leads_used'
+        'leads_captured'
     ];
 
     /**
@@ -30,7 +38,7 @@ class LeadUsage extends Model
     protected $casts = [
         'month' => 'integer',
         'year' => 'integer',
-        'leads_used' => 'integer'
+        'leads_captured' => 'integer'
     ];
 
     /**
@@ -50,7 +58,7 @@ class LeadUsage extends Model
      */
     public function incrementLeads(int $amount = 1): void
     {
-        static::where('id', $this->id)->increment('leads_used', $amount);
-        $this->leads_used += $amount;
+        static::where('id', $this->id)->increment('leads_captured', $amount);
+        $this->leads_captured += $amount;
     }
 }

@@ -6,12 +6,42 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class Lead
- * 
- * @property int     $id
+ * @property int $id
+ * @property int $user_id
+ * @property string $place_id
+ * @property string $name
+ * @property string|null $address
+ * @property string|null $phone
+ * @property string|null $website
+ * @property string|null $category
+ * @property numeric|null $latitude
+ * @property numeric|null $longitude
+ * @property numeric|null $rating
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereCategory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead wherePlaceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Lead whereWebsite($value)
+ * @mixin \Eloquent
  */
 class Lead extends Model
 {
+    protected $table = 'leads';
+
     /**
      * Os atributos que podem ser atribuídos em massa.
      *

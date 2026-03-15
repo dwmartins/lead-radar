@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('monthly_leads_limit');
+            $table->integer('monthly_search_limit');
             $table->decimal('price', 10, 2)->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

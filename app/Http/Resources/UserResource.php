@@ -23,18 +23,19 @@ class UserResource extends JsonResource
             'role'       => $this->role,
             'avatar_url' => $this->avatar_url,
             'plan'       => $this->whenLoaded('plan', fn () => [
-                'id'                  => $this->plan->id,
-                'name'                => $this->plan->name,
-                'monthly_leads_limit' => $this->plan->monthly_leads_limit,
-                'price'               => $this->plan->price,
-                'formatted_price'     => $this->plan->formatted_price,
+                'id'                   => $this->plan->id,
+                'name'                 => $this->plan->name,
+                'monthly_search_limit' => $this->plan->monthly_search_limit,
+                'price'                => $this->plan->price,
+                'formatted_price'      => $this->plan->formatted_price,
             ]),
             'stats' => $this->when(!$this->isAdmin(), fn () => [
-                'leads_used'  => $this->leadsUsedThisMonth(),
-                'leads_limit' => $this->monthlyLeadsLimit(),
-                'remaining'   => $this->remainingLeads(),
-                'percent'     => $this->monthlyLeadsLimit() > 0
-                    ? round(($this->leadsUsedThisMonth() / $this->monthlyLeadsLimit()) * 100, 1)
+                'leads_captured'  => $this->leadsCapturedThisMonth(),
+                'searches_used'  => $this->searchesUsedThisMonth(),
+                'search_limit' => $this->monthlySearchLimit(),
+                'remaining'   => $this->remainingSearches(),
+                'percent'     => $this->monthlySearchLimit() > 0
+                    ? round(($this->searchesUsedThisMonth() / $this->monthlySearchLimit()) * 100, 1)
                     : 0,
             ]),
             'created_at' => $this->created_at,

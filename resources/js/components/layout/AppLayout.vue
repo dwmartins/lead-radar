@@ -145,7 +145,7 @@ const logout = async () => {
                 <div class="topbar-right">
                     <Tag v-if="!auth.isAdmin && auth.user?.stats" severity="info" class="quota-tag">
                         <i class="pi pi-chart-pie me-1" />
-                        {{ auth.user.stats.leads_used }}/{{ auth.user.stats.leads_limit }} leads
+                        {{ auth.user.stats.leads_captured }}/{{ auth.user.stats.leads_limit }} leads
                     </Tag>
 
                     <div class="d-flex align-items-center gap-2">

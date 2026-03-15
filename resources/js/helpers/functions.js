@@ -1,4 +1,5 @@
 import i18n from "@/i18n";
+import { showAlert } from "./alert";
 
 const t = i18n.global.t;
 

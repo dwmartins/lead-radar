@@ -13,24 +13,62 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * Class User
- * 
  * @property int $id
  * @property string $name
  * @property string $last_name
  * @property string $email
+ * @property string|null $phone
  * @property string $password
- * @property string $role ['admin', 'user']
+ * @property string $role
  * @property bool $account_status
  * @property int|null $plan_id
- * @property string|null $phone
  * @property string|null $avatar
- * @property \Illuminate\Support\Carbon|null $last_login_at
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string|null $last_login_at
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string|null $avatar_url
+ * @property-read string $full_name
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LeadCaptured> $leadCaptured
+ * @property-read int|null $lead_captured_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Lead> $leads
+ * @property-read int|null $leads_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \App\Models\Plan|null $plan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SearchUsage> $searchUsages
+ * @property-read int|null $search_usages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User active()
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAccountStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastLoginAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePlanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $table = 'users';
 
     /**
      * Os atributos que podem ser atribuídos em massa.
@@ -93,11 +131,19 @@ class User extends Authenticatable
     }
 
     /**
+     * Relação com SearchUsage
+     */
+    public function searchUsages(): HasMany
+    { 
+        return $this->hasMany(SearchUsage::class); 
+    }
+
+    /**
      * Relação com LeadUsage
      */
-    public function leadUsages(): HasMany
+    public function leadCaptured(): HasMany
     { 
-        return $this->hasMany(LeadUsage::class); 
+        return $this->hasMany(LeadCaptured::class); 
     }
 
     /**
@@ -205,64 +251,77 @@ class User extends Authenticatable
     }
 
     /**
-     * Retorna o registro de uso de leads do usuário no mês atual.
+     * Retorna o registro de uso (buscas e leads) do usuário no mês atual.
      *
-     * Busca na relação `leadUsages` o registro correspondente
+     * Busca na relação `searchUsages` o registro correspondente
      * ao mês e ano atuais.
      *
-     * @return LeadUsage|null Registro de uso do mês atual ou null se não existir.
+     * @return SearchUsage|null Registro de uso do mês atual ou null se não existir.
      */
-    public function currentMonthUsage(): ?LeadUsage
+    public function currentMonthUsage(): ?SearchUsage
     {
-        return $this->leadUsages()
+        return $this->searchUsages()
             ->where('month', now()->month)
             ->where('year', now()->year)
             ->first();
     }
 
     /**
-     * Retorna a quantidade de leads utilizados pelo usuário no mês atual.
+     * Retorna a quantidade de buscas realizadas pelo usuário no mês atual (Limitação do Plano).
      *
-     * @return int Quantidade de leads usados no mês atual.
+     * @return int Quantidade de buscas feitas.
      */
-    public function leadsUsedThisMonth(): int
+    public function searchesUsedThisMonth(): int
     {
-        return $this->currentMonthUsage()?->leads_used ?? 0;
+        return $this->currentMonthUsage()?->searches_used ?? 0;
     }
 
     /**
-     * Retorna o limite mensal de leads permitido pelo plano do usuário.
+     * Retorna a quantidade de leads capturados pelo usuário no mês atual (Ranking/Estatística).
      *
-     * @return int Limite mensal de leads do plano.
+     * @return int Quantidade de leads capturados.
      */
-    public function monthlyLeadsLimit(): int
+    public function leadsCapturedThisMonth(): ?int
     {
-        return $this->plan?->monthly_leads_limit ?? 0;
+        return $this->leadCaptured()
+            ->where('month', now()->month)
+            ->where('year', now()->year)
+            ->first();
     }
 
     /**
-     * Retorna a quantidade de leads restantes disponíveis no mês atual.
+     * Retorna o limite mensal de buscas permitido pelo plano do usuário.
+     *
+     * @return int Limite mensal de buscas do plano.
+     */
+    public function monthlySearchLimit(): int
+    {
+        return $this->plan?->monthly_search_limit ?? 0;
+    }
+
+    /**
+     * Retorna a quantidade de buscas restantes disponíveis no mês atual.
      *
      * Garante que o valor nunca seja negativo.
      *
-     * @return int Quantidade de leads ainda disponíveis.
+     * @return int Quantidade de buscas ainda disponíveis.
      */
-    public function remainingLeads(): int
+    public function remainingSearches(): int
     {
-        return max(0, $this->monthlyLeadsLimit() - $this->leadsUsedThisMonth());
+        return max(0, $this->monthlySearchLimit() - $this->searchesUsedThisMonth());
     }
 
     /**
-     * Verifica se o usuário ainda pode capturar novos leads.
+     * Verifica se o usuário ainda pode realizar novas buscas.
      *
-     * O usuário pode capturar leads apenas se:
+     * O usuário pode buscar apenas se:
      * - possuir um plano ativo
-     * - ainda tiver leads disponíveis no limite mensal
+     * - ainda tiver buscas disponíveis no limite mensal
      *
-     * @return bool True se puder capturar leads, caso contrário false.
+     * @return bool True se puder buscar, caso contrário false.
      */
-    public function canCaptureLeads(): bool
+    public function canPerformSearch(): bool
     {
-        return $this->plan && $this->remainingLeads() > 0;
+        return $this->plan && $this->remainingSearches() > 0;
     }
 }
