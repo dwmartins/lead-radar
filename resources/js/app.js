@@ -21,6 +21,7 @@ import 'primeicons/primeicons.css';
 import PageLoading from '@/components/shared/PageLoading.vue';
 
 import i18n from './i18n';
+import { getLocale } from './helpers/locale';
 
 const pageLoading = createApp(PageLoading);
 pageLoading.mount('#pageLoading');
@@ -30,12 +31,9 @@ const pinia = createPinia();
 
 app.use(router);
 app.use(pinia);
-app.use(i18n)
+app.use(i18n);
 
-const savedLocale = localStorage.getItem('locale')
-const browserLocale = navigator.language.split('-')[0]
-
-const locale = savedLocale || (browserLocale === 'pt' ? 'pt' : 'en')
+const locale = getLocale();
 
 const primeLocales = {
     pt,

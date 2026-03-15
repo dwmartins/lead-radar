@@ -44,23 +44,34 @@ class AppConfigServiceProvider extends ServiceProvider
         }
 
         App::setLocale($locale);
+        Carbon::setLocale($locale);
 
         //----------------------------
         // Local da aplicação
         //----------------------------
-        $timezone = Config::get('app.timezone', 'America/Sao_Paulo');
-        date_default_timezone_set($timezone);
-        Carbon::setLocale($locale);
+        date_default_timezone_set('UTC');
+        Config::set('app.timezone', 'UTC');
 
         //----------------------------
-        // Formato e data e hora
+        // Formato e data e hora, baseados no locale
         //----------------------------
-        Config::set('app.date_format', 'd/m/Y');
-        Config::set('app.datetime_format', 'd/m/Y H:i:s');
+        $formats = [
+            'pt_BR' => [
+                'date' => 'd/m/Y',
+                'datetime' => 'd/m/Y H:i:s',
+                'currency' => 'BRL'
+            ],
+            'en' => [
+                'date' => 'm/d/Y',
+                'datetime' => 'm/d/Y h:i A',
+                'currency' => 'USD'
+            ]
+        ];
 
-        //----------------------------
-        // Configurações globais
-        //----------------------------
-        Config::set('app.currency', 'BRL');
+        $format = $formats[$locale] ?? $formats['pt_BR'];
+
+        Config::set('app.date_format', $format['date']);
+        Config::set('app.datetime_format', $format['datetime']);
+        Config::set('app.currency', $format['currency']);
     }
 }

@@ -12,11 +12,13 @@ import { copyItem } from '@/helpers/functions';
 import Button from 'primevue/button';
 import i18n from "@/i18n";
 import TopUsersSkeleton from '@/components/skeletons/TopUsersSkeleton.vue';
+import { getLocale } from '@/helpers/locale';
 
 const t = i18n.global.t;
+const locale = getLocale();
 
 const empty_img = new URL('@assets/svg/empty.svg', import.meta.url).href;
-const today = new Date().toLocaleDateString('pt-BR', { dateStyle: 'long' });
+const today = new Date().toLocaleDateString(locale, { dateStyle: 'long' });
 
 const loading   = ref(false);
 const medals    = ['🥇', '🥈', '🥉'];

@@ -1,4 +1,5 @@
 <script setup>
+import { getLocale } from '@/helpers/locale';
 import { Skeleton } from 'primevue';
 import { computed } from 'vue'
 
@@ -12,9 +13,11 @@ const props = defineProps({
     is_loading: { type: Boolean, required: true}
 });
 
+const locale = getLocale();
+
 const formattedValue = computed(() =>
     typeof props.value === 'number'
-        ? props.value.toLocaleString('pt-BR')
+        ? props.value.toLocaleString(locale)
         : props.value
 );
 
