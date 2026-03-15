@@ -18,8 +18,16 @@ class Plan extends Model
 {
     use HasFactory;
 
+    /**
+     * Os atributos que podem ser atribuídos em massa.
+     *
+     * @var list<string>
+     */
     protected $fillable = ['name', 'monthly_leads_limit', 'price', 'is_active'];
 
+    /**
+     *  atributos que devem ser convertidos.
+     */
     protected $casts = [
         'price'               => 'decimal:2',
         'is_active'           => 'boolean',

@@ -38,7 +38,7 @@
     --font-inter: 'Inter', sans-serif;
 
     --cards-dark: #18181b; 
-    --body-dark: #0a0a0a;
+    --body-dark: #0a0f1a;
 
     --text-title: #111827;
 
@@ -351,6 +351,10 @@ a:hover {
     z-index: 50;
 }
 
+html.dark-mode .topbar {
+    background-color: var(--cards-dark);
+}
+
 .page-title {
     font-size: 1rem;
     font-weight: 600;
@@ -372,6 +376,11 @@ a:hover {
 .page-content {
     flex: 1;
     padding: 1.5rem;
+    background: var(--p-surface-ground, #f8fafc);
+}
+
+html.dark-mode .page-content {
+    background-color: var(--body-dark);
 }
 
 .page-header {
@@ -409,32 +418,36 @@ a:hover {
     box-shadow: var(--shadow-sm);
 }
 
-.stats-card--indigo { border-left-color: var(--color-indigo); }
-.stats-card--green { border-left-color: var(--color-green); }
-.stats-card--orange { border-left-color: var(--color-orange); }
-.stats-card--blue { border-left-color: var(--color-blue); }
+html.dark-mode .stats-card {
+    background-color: var(--cards-dark);
+}
 
-.stats-card--indigo .stats-card__icon {
+.stats-card-indigo { border-left-color: var(--color-indigo); }
+.stats-card-green { border-left-color: var(--color-green); }
+.stats-card-orange { border-left-color: var(--color-orange); }
+.stats-card-blue { border-left-color: var(--color-blue); }
+
+.stats-card-indigo .stats-card-icon {
     background: rgba(99,102,241,.1);
     color: var(--color-indigo);
 }
 
-.stats-card--green .stats-card__icon {
+.stats-card-green .stats-card-icon {
     background: rgba(16,185,129,.1);
     color: var(--color-green);
 }
 
-.stats-card--orange .stats-card__icon {
+.stats-card-orange .stats-card-icon {
     background: rgba(245,158,11,.1);
     color: var(--color-orange);
 }
 
-.stats-card--blue .stats-card__icon {
+.stats-card-blue .stats-card-icon {
     background: rgba(59,130,246,.1);
     color: var(--color-blue);
 }
 
-.stats-card__icon {
+.stats-card-icon {
     width: 44px;
     height: 44px;
     border-radius: var(--radius-md);
@@ -445,7 +458,7 @@ a:hover {
     flex-shrink: 0;
 }
 
-.stats-card__label {
+.stats-card-label {
     display: block;
     font-size: .78rem;
     font-weight: 600;
@@ -454,7 +467,7 @@ a:hover {
     color: var(--p-text-muted-color, #64748b);
 }
 
-.stats-card__value {
+.stats-card-value {
     display: block;
     font-size: 1.6rem;
     font-weight: 700;

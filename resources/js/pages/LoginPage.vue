@@ -68,7 +68,7 @@ const onSubmit = async () => {
                 </div>
 
                 <div class="field mb-3">
-                    <label for="email">{{ $t('messages.email') }}</label>
+                    <label for="email">{{ $t('messages.label_email') }}</label>
                     <InputText
                         id="email"
                         v-model="form.email"
@@ -80,7 +80,7 @@ const onSubmit = async () => {
                 </div>
 
                 <div class="field mb-3">
-                    <label for="password">{{ $t('messages.password') }}</label>
+                    <label for="password">{{ $t('messages.label_password') }}</label>
                     <Password
                         id="password"
                         v-model="form.password"
@@ -94,7 +94,7 @@ const onSubmit = async () => {
 
                 <div>
                     <Checkbox v-model="form.remember_me" :binary="true" inputId="remember_me" />
-                    <label for="remember_me" class="ms-2">{{ $t('messages.remember_me') }}</label>
+                    <label for="remember_me" class="ms-2">{{ $t('messages.label_remember_me') }}</label>
                 </div>
 
                 <Button

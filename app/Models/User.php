@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -59,7 +61,7 @@ class User extends Authenticatable
     ];
 
     const ROLE_ADMIN   = 'admin';
-    const ROLE_USER = 'usuario';
+    const ROLE_USER = 'user';
 
     /**
      * Obtenha os atributos que devem ser convertidos.
@@ -73,6 +75,29 @@ class User extends Authenticatable
             'password' => 'hashed',
             'account_status' => 'boolean',
         ];
+    }
+
+    /**
+     * Relações
+     * 
+     * Relação com leads
+     */
+    public function leads(): HasMany
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function plan(): BelongsTo
+    { 
+        return $this->belongsTo(Plan::class); 
+    }
+
+    /**
+     * Relação com LeadUsage
+     */
+    public function leadUsages(): HasMany
+    { 
+        return $this->hasMany(LeadUsage::class); 
     }
 
     /**
@@ -177,5 +202,67 @@ class User extends Authenticatable
         if ($this->avatar && Storage::disk('public')->exists("images/avatars/{$this->avatar}")) {
             Storage::disk('public')->delete("images/avatars/{$this->avatar}");
         }
+    }
+
+    /**
+     * Retorna o registro de uso de leads do usuário no mês atual.
+     *
+     * Busca na relação `leadUsages` o registro correspondente
+     * ao mês e ano atuais.
+     *
+     * @return LeadUsage|null Registro de uso do mês atual ou null se não existir.
+     */
+    public function currentMonthUsage(): ?LeadUsage
+    {
+        return $this->leadUsages()
+            ->where('month', now()->month)
+            ->where('year', now()->year)
+            ->first();
+    }
+
+    /**
+     * Retorna a quantidade de leads utilizados pelo usuário no mês atual.
+     *
+     * @return int Quantidade de leads usados no mês atual.
+     */
+    public function leadsUsedThisMonth(): int
+    {
+        return $this->currentMonthUsage()?->leads_used ?? 0;
+    }
+
+    /**
+     * Retorna o limite mensal de leads permitido pelo plano do usuário.
+     *
+     * @return int Limite mensal de leads do plano.
+     */
+    public function monthlyLeadsLimit(): int
+    {
+        return $this->plan?->monthly_leads_limit ?? 0;
+    }
+
+    /**
+     * Retorna a quantidade de leads restantes disponíveis no mês atual.
+     *
+     * Garante que o valor nunca seja negativo.
+     *
+     * @return int Quantidade de leads ainda disponíveis.
+     */
+    public function remainingLeads(): int
+    {
+        return max(0, $this->monthlyLeadsLimit() - $this->leadsUsedThisMonth());
+    }
+
+    /**
+     * Verifica se o usuário ainda pode capturar novos leads.
+     *
+     * O usuário pode capturar leads apenas se:
+     * - possuir um plano ativo
+     * - ainda tiver leads disponíveis no limite mensal
+     *
+     * @return bool True se puder capturar leads, caso contrário false.
+     */
+    public function canCaptureLeads(): bool
+    {
+        return $this->plan && $this->remainingLeads() > 0;
     }
 }
