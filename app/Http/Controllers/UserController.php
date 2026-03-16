@@ -28,7 +28,7 @@ class UserController extends Controller
         $perPage = $request->query('perPage', 7);
         $page    = $request->query('page', 1);
 
-        $filters = $request([
+        $filters = $request->only([
             'keyword',
             'account_status',
             'plan_id'
