@@ -22,7 +22,5 @@ class AddAdminUserSeeder extends Seeder
                 'role' => User::ROLE_ADMIN
             ]
         );
-
-        $this->command->info('✅ Admin: '. env('ADMIN_EMAIL', 'admin@example.com') .' / '. env('ADMIN_PASSWORD', '27072707') .'');
     }
 }

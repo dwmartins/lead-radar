@@ -33,6 +33,62 @@ class Feature extends Model
     ];
 
     /**
+     * Lista padrão de features do sistema
+     */
+    public const DEFAULT_FEATURES = [
+        [
+            'name' => 'Nome',
+            'key' => 'name',
+            'google_field' => 'displayName'
+        ],
+        [
+            'name' => 'Endereço',
+            'key' => 'address',
+            'google_field' => 'formattedAddress'
+        ],
+        [
+            'name' => 'Telefone',
+            'key' => 'phone',
+            'google_field' => 'nationalPhoneNumber'
+        ],
+        [
+            'name' => 'Website',
+            'key' => 'website',
+            'google_field' => 'websiteUri'
+        ],
+        [
+            'name' => 'Categoria',
+            'key' => 'category',
+            'google_field' => 'primaryType'
+        ],
+        [
+            'name' => 'Rating',
+            'key' => 'rating',
+            'google_field' => 'rating'
+        ],
+        [
+            'name' => 'Latitude',
+            'key' => 'latitude',
+            'google_field' => 'location.latitude'
+        ],
+        [
+            'name' => 'Longitude',
+            'key' => 'longitude',
+            'google_field' => 'location.longitude'
+        ],
+        [
+            'name' => 'Exportar Excel',
+            'key' => 'export_excel',
+            'google_field' => null
+        ],
+        [
+            'name' => 'Exportar CSV',
+            'key' => 'export_csv',
+            'google_field' => null
+        ],
+    ];
+
+    /**
      * Relações
      * 
      * Tabela pivô de Plans/Feature

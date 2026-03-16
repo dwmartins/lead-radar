@@ -25,7 +25,5 @@ class AddUserSeeder extends Seeder
                 'plan_id'   => $plan ? $plan->id : null
             ]
         );
-
-        $this->command->info('✅ Usuário: carlos@example.com / 27072707');
     }
 }

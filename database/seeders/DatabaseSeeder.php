@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             AddPlansSeeder::class,
             AddAdminUserSeeder::class,
             AddUserSeeder::class,
-            FeatureSeeder::class
+            FeatureSeeder::class,
+            PlanFeatureSeeder::class
         ]);
     }
 }

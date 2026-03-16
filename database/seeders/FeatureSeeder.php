@@ -13,47 +13,6 @@ class FeatureSeeder extends Seeder
      */
     public function run(): void
     {
-        Feature::insert([
-            [
-                'name' => 'Nome',
-                'key' => 'name',
-                'google_field' => 'displayName'
-            ],
-            [
-                'name' => 'Endereço',
-                'key' => 'address',
-                'google_field' => 'formattedAddress'
-            ],
-            [
-                'name' => 'Telefone',
-                'key' => 'phone',
-                'google_field' => 'nationalPhoneNumber'
-            ],
-            [
-                'name' => 'Website',
-                'key' => 'website',
-                'google_field' => 'websiteUri'
-            ],
-            [
-                'name' => 'Categoria',
-                'key' => 'category',
-                'google_field' => 'primaryType'
-            ],
-            [
-                'name' => 'Rating',
-                'key' => 'rating',
-                'google_field' => 'rating'
-            ],
-            [
-                'name' => 'Latitude',
-                'key' => 'latitude',
-                'google_field' => 'location.latitude'
-            ],
-            [
-                'name' => 'Longitude',
-                'key' => 'longitude',
-                'google_field' => 'location.longitude'
-            ],
-        ]);
+        Feature::insert(Feature::DEFAULT_FEATURES);
     }
 }
