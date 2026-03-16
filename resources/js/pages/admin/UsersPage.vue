@@ -16,6 +16,7 @@ import { showAlert } from '@/helpers/alert';
 import userService from '@/services/user.service';
 import UsersTableSkeleton from '@/components/skeletons/UsersTableSkeleton.vue';
 import EmptyData from '@/components/ui/EmptyData.vue';
+import planService from '@/services/plan.service';
 
 const { isMobile } = useMobile();
 const locale       = getLocale();
@@ -65,7 +66,15 @@ const fetchUsers = async (page = 1) => {
 }
 
 const fetchPlans = async () => {
-
+    try {
+        loadingPlans.value = true;
+        const response = await planService.index();
+        plans.value = response;
+    } catch (error) {
+        showAlert('error', error.response?.data);
+    } finally {
+        loadingPlans.value = false;
+    }
 }
 
 const handlePagination = (response) => {
@@ -130,17 +139,10 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
                                 optionLabel="name"
                                 optionValue="id"
                                 :options="plans"
-                                filter
                                 :placeholder="$t('messages.placeholder_plan')"
                                 :loading="loadingPlans"
                                 class="w-100"
                             >
-                                <template #item="slotProps">
-                                    <span>{{ slotProps.option.name.substring(0, 40) + '...' }}</span>
-                                </template>
-                                <template #option="slotProps">
-                                    <span>{{ slotProps.option.name.substring(0, 40) + '...'}}</span>
-                                </template>
                             </Select>
                         </div>
                         <div class="col-12 col-md-2 mb-3">
