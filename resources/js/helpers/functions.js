@@ -16,3 +16,37 @@ export async function copyItem(itemName, item){
         showAlert('error', t('messages.error_copying_to_clipboard'));
     }
 }
+
+/**
+ * Abre o WhatsApp do usuário
+ * @param {object} user 
+ */
+export function openWhatsApp(user){
+    if(!user.phone) return;
+    
+    const phone = user.phone.replace(/\D/g, '');
+    const message = `${t('messages.hi')} ${user.name}!`;
+    const url = `https://wa.me/55${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
+
+/**
+ * 
+ * @param {string} phone 
+ * @returns {string} Telefone formatado 
+ */
+export function formatPhone(phone) {
+    if (!phone) return "";
+
+    const digits = phone.replace(/\D/g, "");
+
+    if(digits.length === 11) {
+        return digits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    }
+
+    if(digits.length === 10) {
+        return digits.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    }
+
+    return digits;
+}

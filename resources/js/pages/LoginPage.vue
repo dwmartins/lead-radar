@@ -99,7 +99,7 @@ const onSubmit = async () => {
 
                 <Button
                     type="submit"
-                    :label="$t('messages.sign_in')"
+                    :label="$t('messages.btn_sign_in')"
                     icon="pi pi-sign-in"
                     :loading="loading"
                     fluid

@@ -37,5 +37,10 @@ export const en = {
     weak: 'Weak',
     medium: 'Medium',
     strong: 'Strong',
-    passwordPrompt: 'Enter a password'
+    passwordPrompt: 'Enter a password',
+    emptyMessage: 'No available options',
+    emptyFilterMessage: 'No results found',
+    searchMessage: 'Search',
+    selectionMessage: '{0} items selected',
+    emptySelectionMessage: 'No item selected'
 };

@@ -5,9 +5,19 @@ export default {
     label_remember_me: 'Lembrar de mim',
     label_user: 'Usuário',
     label_plan: 'Plano',
+    label_name: 'Nome',
+    label_register: 'Registro',
+    label_actions: 'Ações',
 
     // Button labels
-    sign_in: 'Entrar',
+    btn_sign_in: 'Entrar',
+    btn_new_user: 'Novo Usuário',
+    btn_filter: 'Filtrar',
+    btn_clean_filter: 'Limpar',
+
+    // Placeholders
+    placeholder_search_user: 'Buscar por nome, e-mail...',
+    placeholder_plan: 'Plano',
 
     // Basic messages
     log_your_account: 'Acesse sua conta para continuar',
@@ -26,4 +36,11 @@ export default {
     user_ranking_this_month: 'Ranking de Usuários — Este Mês',
     leads_month: 'Leads (mês)',
     no_results_found: 'Nenhum resultado encontrado.',
+    title_manage_users: 'Gerenciar Usuários',
+    registered_users: 'Usuários cadastrados',
+    status_active: 'Ativo',
+    status_inactive: 'Inativo',
+    hi: 'Olá',
+    oops_nothing_here: 'Ops, nada por aqui...',
+    check_filters_or_adjust_search: 'Verifique os filtros aplicados ou tente ajustar sua busca.',
 }

@@ -37,5 +37,10 @@ export const pt = {
     weak: 'Fraco',
     medium: 'Médio',
     strong: 'Forte',
-    passwordPrompt: 'Digite uma senha'
+    passwordPrompt: 'Digite uma senha',
+    emptyMessage: 'Nenhuma opção disponível',
+    emptyFilterMessage: 'Nenhum resultado encontrado',
+    searchMessage: 'Pesquisar',
+    selectionMessage: '{0} itens selecionados',
+    emptySelectionMessage: 'Nenhum item selecionado'
 };

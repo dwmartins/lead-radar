@@ -5,9 +5,19 @@ export default {
     label_remember_me: 'Remember me',
     label_user: 'User',
     label_plan: 'Plan',
+    label_name: 'Name',
+    label_register: 'Register',
+    label_actions: 'Actions',
 
     // Button labels
-    sign_in: 'Sign in',
+    btn_sign_in: 'Sign in',
+    btn_new_user: 'New User',
+    btn_filter: 'Filter',
+    btn_clean_filter: 'Clear',
+
+    // Placeholders
+    placeholder_search_user: 'Search by name, email...',
+    placeholder_plan: 'Plan',
 
     // Basic messages
     log_your_account: 'Log in to your account to continue',
@@ -26,4 +36,11 @@ export default {
     user_ranking_this_month: 'User Ranking — This Month',
     leads_month: 'Leads (month)',
     no_results_found: 'No results found.',
+    title_manage_users: 'Manage Users',
+    registered_users: 'Registered users',
+    status_active: 'Active',
+    status_inactive: 'Inactive',
+    hi: 'Hello',
+    oops_nothing_here: 'Oops, nothing here...',
+    check_filters_or_adjust_search: 'Check the filters applied or try adjusting your search.',
 }
