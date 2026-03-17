@@ -1,4 +1,7 @@
 import { showAlert } from "./alert";
+import i18n from "@/i18n";
+
+const t = i18n.global.t;
 
 /**
  * Valida os campos obrigatórios em um formulário e atualiza os campos com erros.
@@ -11,16 +14,19 @@ import { showAlert } from "./alert";
  */
 export function validateForm(formData, requiredFields, fieldErrorsRef) {
     let isValid = true;
-    const new_erros = {};
+    const new_errors = {};
 
     for (const {id, label, empty_message} of requiredFields) {
         if (!formData[id]) {
             isValid = false;
-            new_erros[id] = empty_message ? empty_message : [`O campo "${label}" é obrigatório.`];
+
+            new_errors[id] = [
+                empty_message || t('messages.required', { label })
+            ];
         }
     }
 
-    Object.assign(fieldErrorsRef, new_erros);
+    Object.assign(fieldErrorsRef, new_errors);
 
     if(!isValid) {
         const filteredErrors = Object.entries(fieldErrorsRef).reduce((acc, [key, value]) => {

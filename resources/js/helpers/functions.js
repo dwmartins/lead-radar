@@ -50,3 +50,12 @@ export function formatPhone(phone) {
 
     return digits;
 }
+
+/**
+ * @param {String} str 
+ * @returns {string} retorna a string com primeira letra maiúscula e os resto minuscula.
+ */
+export function capitalizeFirstLetter(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

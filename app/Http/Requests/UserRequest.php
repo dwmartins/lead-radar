@@ -14,7 +14,7 @@ class UserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -35,6 +35,16 @@ class UserRequest extends FormRequest
             'account_status' => ['required', 'boolean'],
             'plan_id' => ['nullable', 'integer']
         ];
+
+        if($user_id) {
+            if($this->filled('password')) {
+                $base_rules['password'] = ['string', 'min:8'];
+            } else {
+                $base_rules['password'] = ['nullable'];
+            }
+        } else {
+            $base_rules['password'] = ['required', 'string', 'min:8'];
+        }
 
         foreach ($base_rules as $field => $rules) {
             if (is_array($rules)) {

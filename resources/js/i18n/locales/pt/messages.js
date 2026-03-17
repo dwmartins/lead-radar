@@ -6,18 +6,33 @@ export default {
     label_user: 'Usuário',
     label_plan: 'Plano',
     label_name: 'Nome',
+    label_last_name: 'Sobrenome',
     label_register: 'Registro',
     label_actions: 'Ações',
+    label_user_type: 'Tipo',
+    label_new_optional_password: 'Nova Senha (opcional)',
+    label_confirm_password: 'Confirmar Senha',
+    label_optional_phone: 'Telefone (Opcional)',
 
     // Button labels
     btn_sign_in: 'Entrar',
     btn_new_user: 'Novo Usuário',
     btn_filter: 'Filtrar',
     btn_clean_filter: 'Limpar',
+    btn_cancel: 'Cancelar',
+    btn_update: 'Atualizar',
+    btn_save: 'Salvar',
+    btn_loading: 'Aguarde...',
 
     // Placeholders
     placeholder_search_user: 'Buscar por nome, e-mail...',
     placeholder_plan: 'Plano',
+    placeholder_select_plan: 'Selecione um plano',
+    
+    // Validations
+    required: "O campo {label} é obrigatório.",
+    password_min_length: 'A senha deve ter no mínimo {min} caracteres.',
+    password_mismatch: 'As senhas não coincidem.',
 
     // Basic messages
     log_your_account: 'Acesse sua conta para continuar',
@@ -43,4 +58,13 @@ export default {
     hi: 'Olá',
     oops_nothing_here: 'Ops, nada por aqui...',
     check_filters_or_adjust_search: 'Verifique os filtros aplicados ou tente ajustar sua busca.',
+    title_dialog_edit_user: 'Editar Usuário',
+    title_dialog_new_user: 'Novo Usuário',
+    role_admin: 'Admin',
+    role_user: 'Usuário',
+    section_account: "Conta",
+    section_personal_info: "Informações pessoais",
+    section_access: "Acesso",
+    section_security: "Segurança",
+    section_plan: "Plano",
 }

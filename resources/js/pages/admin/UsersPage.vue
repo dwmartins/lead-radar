@@ -17,6 +17,7 @@ import userService from '@/services/user.service';
 import UsersTableSkeleton from '@/components/skeletons/UsersTableSkeleton.vue';
 import EmptyData from '@/components/ui/EmptyData.vue';
 import planService from '@/services/plan.service';
+import FormDialog from '@/components/dialog/user/FormDialog.vue';
 
 const { isMobile } = useMobile();
 const locale       = getLocale();
@@ -25,7 +26,7 @@ const loadingUsers = ref(false);
 const loadingPlans = ref(false);
 const users        = ref([]);
 const user         = ref(null);
-const plans        = ref(null);
+const plans        = ref([]);
 
 const pagination   = ref({});
 const currentPage  = ref(1);
@@ -39,7 +40,7 @@ const filters = reactive({
 
 const { applyFromRoute, syncToRoute, buildApiFilters } = useQueryFilters(filters, currentPage);
 
-const modalVisible = reactive({
+const dialogVisible = reactive({
     form: false,
     delete: false
 });
@@ -97,8 +98,15 @@ const onClearSearch = () => {
     fetchUsers();
 }
 
-const openDialog = () => {
+const openDialog = (dialogType, data = null) => {
+    user.value = null
 
+    user.value = data ? {...data} : null;
+    dialogVisible[dialogType] = true;
+}
+
+const onCloseDialog = async () => {
+    await fetchUsers();
 }
 
 const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
@@ -116,7 +124,7 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
                 <Button
                     :label="isMobile ? '' : $t('messages.btn_new_user')"
                     icon="pi pi-plus"
-                    @click="openDialog()"
+                    @click="openDialog('form')"
                     size="small"
                 />
             </div>
@@ -244,7 +252,7 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
                                     severity="info" 
                                     style="font-size: 12px; padding: 2px 6px;"
                                 />
-                                <span v-else class="text-muted">—</span>
+                                <span v-else class="text-muted text-center w-100 d-block">—</span>
                             </template>
                         </Column>
                         <Column header="Leads" style="width:80px">
@@ -270,7 +278,7 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
                                         variant="text" 
                                         aria-label="Filter" 
                                         rounded
-                                        @click="openDialog()"
+                                        @click="openDialog('form', data)"
                                     />
                                     <Button
                                         icon="pi pi-trash" 
@@ -289,5 +297,12 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
                 </template>
             </Card>
         </div>
+
+        <FormDialog
+            v-model="dialogVisible.form"
+            :plans="plans"
+            :user="user"
+            @saved="onCloseDialog"
+        />
     </section>
 </template>

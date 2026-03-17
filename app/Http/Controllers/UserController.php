@@ -34,8 +34,7 @@ class UserController extends Controller
             'plan_id'
         ]);
 
-        $query = User::whereRole(User::ROLE_USER)
-            ->with('plan')
+        $query = User::with('plan')
             ->withCount('leads');
         
         if(isset($filters['keyword']) && !empty($filters['keyword'])) {

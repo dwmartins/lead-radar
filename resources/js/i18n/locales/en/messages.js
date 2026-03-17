@@ -6,18 +6,33 @@ export default {
     label_user: 'User',
     label_plan: 'Plan',
     label_name: 'Name',
+    label_last_name: 'Last Name',
     label_register: 'Register',
     label_actions: 'Actions',
+    label_user_type: 'Role',
+    label_new_optional_password: 'New Password (optional)',
+    label_confirm_password: 'Confirm Password',
+    label_optional_phone: 'Phone (Optional)',
 
     // Button labels
     btn_sign_in: 'Sign in',
     btn_new_user: 'New User',
     btn_filter: 'Filter',
     btn_clean_filter: 'Clear',
+    btn_cancel: 'Cancel',
+    btn_update: 'Update',
+    btn_save: 'Save',
+    btn_loading: 'Wait...',
 
     // Placeholders
     placeholder_search_user: 'Search by name, email...',
     placeholder_plan: 'Plan',
+    placeholder_select_plan: 'Selecione um plano',
+
+    // Validations
+    required: "{label} is required.",
+    password_min_length: 'The password must be at least {min} characters long.',
+    password_mismatch: 'Passwords do not match.',
 
     // Basic messages
     log_your_account: 'Log in to your account to continue',
@@ -43,4 +58,13 @@ export default {
     hi: 'Hello',
     oops_nothing_here: 'Oops, nothing here...',
     check_filters_or_adjust_search: 'Check the filters applied or try adjusting your search.',
+    title_dialog_edit_user: 'Edit User',
+    title_dialog_new_user: 'New User',
+    role_admin: 'Admin',
+    role_user: 'User',
+    section_account: "Account",
+    section_personal_info: "Personal information",
+    section_access: "Access",
+    section_security: "Security",
+    section_plan: "Plan",
 }
