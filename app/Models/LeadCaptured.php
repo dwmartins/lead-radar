@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class LeadCaptured
- *
  * @property int $id
  * @property int $user_id
  * @property int $month
@@ -15,6 +13,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $leads_captured
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured whereLeadsCaptured($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured whereMonth($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LeadCaptured whereYear($value)
+ * @mixin \Eloquent
  */
 class LeadCaptured extends Model
 {
@@ -41,9 +51,13 @@ class LeadCaptured extends Model
         'leads_captured' => 'integer'
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELAÇÕES
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Relações
-     * 
      * Relação com usuário.
      */
     public function user(): BelongsTo
@@ -51,9 +65,13 @@ class LeadCaptured extends Model
         return $this->belongsTo(User::class); 
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | HELPERS
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Métodos
-     * 
      * Incrementa atomicamente via SQL — sem sobrescrever increment() do Eloquent
      */
     public function incrementLeads(int $amount = 1): void

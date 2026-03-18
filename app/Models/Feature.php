@@ -9,12 +9,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property string $name
  * @property string $key
- * @property string $google_field
+ * @property string|null $google_field
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Plan> $plans
  * @property-read int|null $plans_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereGoogleField($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feature whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Feature extends Model
@@ -88,11 +96,11 @@ class Feature extends Model
         ],
     ];
 
-    /**
-     * Relações
-     * 
-     * Tabela pivô de Plans/Feature
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | RELAÇÕES
+    |--------------------------------------------------------------------------
+    */
     public function plans(): BelongsToMany
     {
         return $this->belongsToMany(Plan::class, 'plan_features');

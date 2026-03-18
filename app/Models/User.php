@@ -12,6 +12,58 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $last_name
+ * @property string $email
+ * @property string|null $phone
+ * @property string $password
+ * @property string $role
+ * @property bool $account_status
+ * @property string|null $avatar
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string|null $last_login_at
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Subscription|null $activeSubscription
+ * @property-read string|null $avatar_url
+ * @property-read string $full_name
+ * @property-read \App\Models\Plan|null $plan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LeadCaptured> $leadCaptured
+ * @property-read int|null $lead_captured_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Lead> $leads
+ * @property-read int|null $leads_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SearchUsage> $searchUsages
+ * @property-read int|null $search_usages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
+ * @property-read int|null $subscriptions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read int|null $tokens_count
+ * @method static Builder<static>|User active()
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static Builder<static>|User newModelQuery()
+ * @method static Builder<static>|User newQuery()
+ * @method static Builder<static>|User query()
+ * @method static Builder<static>|User whereAccountStatus($value)
+ * @method static Builder<static>|User whereAvatar($value)
+ * @method static Builder<static>|User whereCreatedAt($value)
+ * @method static Builder<static>|User whereEmail($value)
+ * @method static Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static Builder<static>|User whereId($value)
+ * @method static Builder<static>|User whereLastLoginAt($value)
+ * @method static Builder<static>|User whereLastName($value)
+ * @method static Builder<static>|User whereName($value)
+ * @method static Builder<static>|User wherePassword($value)
+ * @method static Builder<static>|User wherePhone($value)
+ * @method static Builder<static>|User whereRememberToken($value)
+ * @method static Builder<static>|User whereRole($value)
+ * @method static Builder<static>|User whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

@@ -53,9 +53,13 @@ class SearchUsage extends Model
         'searches_used' => 'integer'
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELAÇÕES
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Relações
-     * 
      * Relação com usuário.
      */
     public function user(): BelongsTo
@@ -63,9 +67,13 @@ class SearchUsage extends Model
         return $this->belongsTo(User::class); 
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | HELPERS
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Métodos
-     * 
      * Incrementa o contador de buscas realizadas.
      * Isso consome o limite do plano.
      */

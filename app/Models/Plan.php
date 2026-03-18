@@ -54,6 +54,12 @@ class Plan extends Model
         'monthly_search_limit' => 'integer',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELAÇÕES
+    |--------------------------------------------------------------------------
+    */
+
     /**
      * Tabela pivô de Plans/Feature
      */
@@ -61,10 +67,14 @@ class Plan extends Model
     {
         return $this->belongsToMany(Feature::class, 'plan_features');
     }
+    
+    /*
+    |--------------------------------------------------------------------------
+    | ATTRIBUTES
+    |--------------------------------------------------------------------------
+    */
 
     /**
-     * Atributos
-     * 
      * Retorna o preço formatado.
      */
     public function getFormattedPriceAttribute(): string

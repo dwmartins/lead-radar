@@ -5,6 +5,42 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $plan_id
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $started_at
+ * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property \Illuminate\Support\Carbon|null $canceled_at
+ * @property \Illuminate\Support\Carbon|null $trial_ends_at
+ * @property string|null $payment_gateway
+ * @property string|null $payment_method
+ * @property string $billing_cycle
+ * @property numeric $amount
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Plan $plan
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereBillingCycle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCanceledAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePaymentGateway($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePaymentMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePlanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStartedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereTrialEndsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Subscription extends Model
 {
     /**
@@ -57,9 +93,13 @@ class Subscription extends Model
     public const METHOD_BOLETO      = 'boleto';
     public const METHOD_DEBIT_CARD  = 'debit_card';
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELAÇÕES
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Relações
-     * 
      * Relacionamento com usuários
      */
     public function user(): BelongsTo
@@ -75,9 +115,13 @@ class Subscription extends Model
         return $this->belongsTo(Plan::class);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | HELPERS
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Métodos
-     * 
      * Verifica se a assinatura está ativa.
      */
     public function isActive(): bool

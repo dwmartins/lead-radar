@@ -69,9 +69,13 @@ class Lead extends Model
         'rating' => 'decimal:1'
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELAÇÕES
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Relações
-     * 
      * Relações com usuário.
      */
     public function user(): BelongsTo 
@@ -79,9 +83,13 @@ class Lead extends Model
         return $this->belongsTo(User::class); 
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | HELPERS
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Métodos
-     * 
      * Verifica se já existe um registro para um usuário com o place_id informado.
      * Usado para evitar duplicação de registros para o mesmo usuário.
      * 
