@@ -47,8 +47,7 @@ const getDefaultUser = () => ({
     password: '',
     password_confirmation: '',
     role: 'user',
-    account_status: true,
-    plan_id: null
+    account_status: true
 });
 
 const form = reactive(getDefaultUser());
@@ -84,10 +83,6 @@ const onSubmit = async () => {
     if(!isUpdate.value) {
         requiredFields.push({id: 'password',              label: t('messages.label_password')});
         requiredFields.push({id: 'password_confirmation', label: t('messages.label_confirm_password')});
-    }
-
-    if(form.role !== 'admin') {
-        requiredFields.push({id: 'plan_id', label: t('messages.label_plan')});
     }
 
     if(!validateForm(form, requiredFields, fieldErrors)) return;
@@ -263,26 +258,6 @@ watch(() => props.modelValue, (opened) => {
                         fluid
                         :invalid="!!fieldErrors.password_confirmation"
                         @change="fieldErrors.password_confirmation = null"
-                    />
-                </div>
-            </div>
-
-            <div class="col-12">
-                <h4>{{ $t('messages.section_plan') }}</h4>
-            </div>
-
-            <div class="col-12 col-md-6">
-                <div class="field">
-                    <label>{{ $t('messages.label_plan') }}</label>
-                    <Select 
-                        v-model="form.plan_id" 
-                        :options="props.plans" 
-                        optionLabel="name" 
-                        optionValue="id" 
-                        fluid 
-                        :invalid="!!fieldErrors.plan_id"
-                        @change="fieldErrors.plan_id = null"
-                        :placeholder="$t('messages.placeholder_select_plan')"
                     />
                 </div>
             </div>

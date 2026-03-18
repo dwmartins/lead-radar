@@ -60,5 +60,18 @@ export default {
     async update(data) {
         const response = await axios.put(`${API_URL}/user`, data);
         return response.data;
+    },
+    
+    /**
+     * Exclui um usuário
+     * 
+     * @param {Number} user_id 
+     * @returns {Promise<{ message: string}>}
+     * Retorna um objeto contendo:
+     * - message: Mensagem de sucesso da API
+     */
+    async delete(user_id) {
+        const response = await axios.delete(`${API_URL}/user/${user_id}`);
+        return response.data;
     }
 }

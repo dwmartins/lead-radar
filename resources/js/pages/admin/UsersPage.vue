@@ -18,9 +18,12 @@ import UsersTableSkeleton from '@/components/skeletons/UsersTableSkeleton.vue';
 import EmptyData from '@/components/ui/EmptyData.vue';
 import planService from '@/services/plan.service';
 import FormDialog from '@/components/dialog/user/FormDialog.vue';
+import { useConfirm } from 'primevue';
+import DeleteUserDialog from '@/components/dialog/user/DeleteUserDialog.vue';
 
 const { isMobile } = useMobile();
 const locale       = getLocale();
+const confirm      = useConfirm();
 
 const loadingUsers = ref(false);
 const loadingPlans = ref(false);
@@ -279,7 +282,7 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
                                         aria-label="Filter" 
                                         severity="danger"
                                         rounded
-                                        @click="openDialog()"
+                                        @click="openDialog('delete', data)"
                                     />
                                 </div>
                             </template>
@@ -296,6 +299,12 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
             :plans="plans"
             :user="user"
             @saved="onCloseDialog"
+        />
+        
+        <DeleteUserDialog
+            v-model="dialogVisible.delete"
+            :user="user"
+            @deleted="onCloseDialog"
         />
     </section>
 </template>

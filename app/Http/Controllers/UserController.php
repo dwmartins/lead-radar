@@ -156,7 +156,7 @@ class UserController extends Controller
      */
     public function getById(Request $request, $id): JsonResponse
     {
-        $user = User::with(['plan'])->find($id);
+        $user = User::find($id);
 
         if(!$user) {
             return response()->json([

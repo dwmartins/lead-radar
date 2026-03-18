@@ -23,6 +23,7 @@ export default {
     btn_update: 'Update',
     btn_save: 'Save',
     btn_loading: 'Wait...',
+    btn_confirm_delete: 'Delete',
 
     // Placeholders
     placeholder_search_user: 'Search by name, email...',
@@ -60,6 +61,7 @@ export default {
     check_filters_or_adjust_search: 'Check the filters applied or try adjusting your search.',
     title_dialog_edit_user: 'Edit User',
     title_dialog_new_user: 'New User',
+    title_dialog_delete_user: 'Confirm deletion',
     role_admin: 'Admin',
     role_user: 'User',
     section_account: "Account",
@@ -67,4 +69,5 @@ export default {
     section_access: "Access",
     section_security: "Security",
     section_plan: "Plan",
+    confirm_delete_user: "Are you sure you want to delete the user \"{name}\"?"
 }

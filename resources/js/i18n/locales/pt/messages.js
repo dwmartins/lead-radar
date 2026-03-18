@@ -23,6 +23,7 @@ export default {
     btn_update: 'Atualizar',
     btn_save: 'Salvar',
     btn_loading: 'Aguarde...',
+    btn_confirm_delete: 'Excluir',
 
     // Placeholders
     placeholder_search_user: 'Buscar por nome, e-mail...',
@@ -60,6 +61,7 @@ export default {
     check_filters_or_adjust_search: 'Verifique os filtros aplicados ou tente ajustar sua busca.',
     title_dialog_edit_user: 'Editar Usuário',
     title_dialog_new_user: 'Novo Usuário',
+    title_dialog_delete_user: 'Confirmar exclusão',
     role_admin: 'Admin',
     role_user: 'Usuário',
     section_account: "Conta",
@@ -67,4 +69,5 @@ export default {
     section_access: "Acesso",
     section_security: "Segurança",
     section_plan: "Plano",
+    confirm_delete_user: "Tem certeza que deseja excluir o usuário \"{name}\"?"
 }

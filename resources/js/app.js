@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap-grid.min.css'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import { initTheme } from './helpers/theme';
+import ConfirmationService from 'primevue/confirmationservice'
 
 import { pt } from './i18n/primevue/pt';
 import { en } from './i18n/primevue/en'
@@ -50,6 +51,7 @@ app.use(PrimeVue, {
     locale: primeLocales[locale]
 });
 
+app.use(ConfirmationService)
 app.directive('tooltip', Tooltip);
 
 initTheme();
