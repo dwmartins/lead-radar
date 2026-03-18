@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->boolean('account_status')->default(true);
-            $table->foreignId('plan_id')->nullable()->constrained('plans')->nullOnDelete();
             $table->string('avatar', 100)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('last_login_at')->nullable();

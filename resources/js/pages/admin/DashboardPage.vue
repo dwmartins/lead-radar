@@ -124,7 +124,7 @@ const handle = async () => {
                         </Column>
                         <Column :header="$t('messages.leads_month')" style="width:140px">
                             <template #body="{ data }">
-                                <span class="d-block fw-semibold text-primary text-center">{{ data.leads_this_month ?? 0 }}</span>
+                                <span class="d-block fw-semibold text-primary text-center">{{ data.monthly_statistics.leads_captured ?? 0 }}</span>
                                 <!-- <span v-if="data.plan" class="text-muted"> / {{ data.plan.monthly_leads_limit }}</span> -->
                             </template>
                         </Column>

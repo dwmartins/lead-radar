@@ -255,13 +255,6 @@ const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale) : '—';
                                 <span v-else class="text-muted text-center w-100 d-block">—</span>
                             </template>
                         </Column>
-                        <Column header="Leads" style="width:80px">
-                            <template #body="{ data }">
-                                <div class="text-center">
-                                    {{ data.leads_count ?? 0 }}
-                                </div>
-                            </template>
-                        </Column>
                         <Column :header="$t('messages.label_register')" class="d-none d-xl-table-cell" style="width:120px">
                             <template #body="{ data }">
                                 <span class="small">{{ formatDate(data.created_at) }}</span>

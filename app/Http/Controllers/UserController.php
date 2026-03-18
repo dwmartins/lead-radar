@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class UserController extends Controller
             'plan_id'
         ]);
 
-        $query = User::with('plan')
+        $query = User::with(['activeSubscription.plan'])
             ->withCount('leads');
         
         if(isset($filters['keyword']) && !empty($filters['keyword'])) {
@@ -52,7 +53,7 @@ class UserController extends Controller
         }
 
         if (!empty($filters['plan_id'])) {
-            $query->whereHas('plan', function ($q) use ($filters) {
+            $query->whereHas('activeSubscription', function ($q) use ($filters) {
                 $q->where('plan_id', (int) $filters['plan_id']);
             });
         }
@@ -60,9 +61,9 @@ class UserController extends Controller
         $query->orderBy('created_at', 'desc');
 
         $users = $query->paginate($perPage, ['*'], 'page', $page);
-        
+
         return response()->json([
-            'data' => $users->items(),
+            'data' => UserResource::collection($users->items()),
             'pagination' => [
                 'current_page' => $users->currentPage(),
                 'last_page' => $users->lastPage(),
@@ -85,7 +86,6 @@ class UserController extends Controller
         $user->account_status = $data['account_status'];
         $user->role = User::ROLE_USER;
         $user->password = $data['password'];
-        $user->plan_id = $data['plan_id'] ?? null;
         $user->save();
 
         return response()->json([
@@ -114,7 +114,6 @@ class UserController extends Controller
 
         $user->fill($data);
         $user->account_status = $data['account_status'];
-        $user->plan_id = $data['plan_id'];
 
         if(!empty($data['password'])) {
             $user->password = $data['password'];

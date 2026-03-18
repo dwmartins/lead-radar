@@ -16,15 +16,16 @@ class DashboardController extends Controller
     public function AdminDashboard(Request $request)
     {
         $now = now();
+        $request->merge(['with_monthly_statistics' => true]);
 
         $top_users = User::where('role', User::ROLE_USER)
-            ->with('plan')
+            ->with(['activeSubscription.plan'])
             ->withCount(['leads as leads_this_month' => fn ($q) =>
                 $q->whereMonth('created_at', $now->month)->whereYear('created_at', $now->year)])
             ->orderByDesc('leads_this_month')
             ->limit(10)
             ->get();
-        
+
         return response()->json([
             'stats' => [
                 'total_users'      => User::where('role', 'user')->count(),

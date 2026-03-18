@@ -33,7 +33,6 @@ class UserRequest extends FormRequest
             'phone' => ['nullable', 'max:100'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user_id)],
             'account_status' => ['required', 'boolean'],
-            'plan_id' => ['nullable', 'integer']
         ];
 
         if($user_id) {

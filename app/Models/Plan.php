@@ -55,16 +55,6 @@ class Plan extends Model
     ];
 
     /**
-     * Relações
-     * 
-     * Relacionamento com usuários
-     */
-    public function users(): HasMany
-    {
-        return $this->hasMany(User::class);
-    }
-
-    /**
      * Tabela pivô de Plans/Feature
      */
     public function features(): BelongsToMany
