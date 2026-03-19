@@ -8,18 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Plan
- *
- * @property int     $id
- * @property string  $name
- * @property int     $monthly_search_limit
- * @property float   $price
- * @property boolean $is_active
+ * @property int $id
+ * @property string $name
+ * @property int $monthly_search_limit
+ * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string $formatted_price
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
- * @property-read int|null $users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
+ * @property-read int|null $features_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PlanPrice> $prices
+ * @property-read int|null $prices_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan query()
@@ -28,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereMonthlySearchLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -43,14 +40,17 @@ class Plan extends Model
      *
      * @var list<string>
      */
-    protected $fillable = ['name', 'monthly_search_limit', 'price', 'is_active'];
+    protected $fillable = [
+        'name', 
+        'monthly_search_limit', 
+        'is_active'
+    ];
 
     /**
      *  atributos que devem ser convertidos.
      */
     protected $casts = [
-        'price'               => 'decimal:2',
-        'is_active'           => 'boolean',
+        'is_active'            => 'boolean',
         'monthly_search_limit' => 'integer',
     ];
 
@@ -67,6 +67,14 @@ class Plan extends Model
     {
         return $this->belongsToMany(Feature::class, 'plan_features');
     }
+
+    /**
+     * Relação com prices
+     */
+    public function prices(): HasMany
+    {
+        return $this->hasMany(PlanPrice::class);
+    }
     
     /*
     |--------------------------------------------------------------------------
@@ -75,10 +83,19 @@ class Plan extends Model
     */
 
     /**
-     * Retorna o preço formatado.
+     * Retorna o preço do plano para uma moeda específica.
+     *
+     * Busca o primeiro preço ativo associado ao plano
+     * de acordo com a moeda informada.
+     *
+     * @param string $currency Código da moeda (ex: BRL, USD, EUR)
+     * @return \App\Models\PlanPrice|null Retorna a model PlanPrice ou null caso não exista
      */
-    public function getFormattedPriceAttribute(): string
+    public function priceFor(string $currency = 'BRL'): ?PlanPrice
     {
-        return $this->price ? 'R$ '.number_format($this->price, 2, ',', '.') : 'Gratuito';
+        return $this->prices()
+            ->where('currency', $currency)
+            ->where('is_active', true)
+            ->first();
     }
 }

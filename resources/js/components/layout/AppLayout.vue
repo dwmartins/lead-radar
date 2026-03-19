@@ -112,6 +112,7 @@ const logout = async () => {
                     <NavItem to="/admin/users"      icon="pi-users"       label="Usuários"   :collapsed="sidebarCollapsed" />
                     <NavItem to="/admin/plans"      icon="pi-credit-card" label="Planos"    :collapsed="sidebarCollapsed" />
                     <NavItem to="/admin/leads"      icon="pi-database"    label="Todos Leads" :collapsed="sidebarCollapsed" />
+                    <NavItem to="/admin/subscriptions" icon="pi-refresh"    label="Subscriptions" :collapsed="sidebarCollapsed" />
                 </template>
             </nav>
 
@@ -196,10 +197,11 @@ const logout = async () => {
                     <NavItem to="/leads"   icon="pi-list"         label="Meus Leads"   @click="mobileSidebar = false" />
                 </template>
                 <template v-else>
-                    <NavItem to="/admin"        icon="pi-chart-bar"   label="Dashboard"   @click="mobileSidebar = false" />
+                    <NavItem to="/admin/dashboard" icon="pi-chart-bar"   label="Dashboard"   @click="mobileSidebar = false" />
                     <NavItem to="/admin/users"  icon="pi-users"       label="Usuários"    @click="mobileSidebar = false" />
                     <NavItem to="/admin/plans"  icon="pi-credit-card" label="Planos"      @click="mobileSidebar = false" />
                     <NavItem to="/admin/leads"  icon="pi-database"    label="Todos Leads" @click="mobileSidebar = false" />
+                    <NavItem to="/admin/subscriptions" icon="pi-refresh"    label="Subscriptions" :collapsed="sidebarCollapsed = false" />
                 </template>
             </nav>
         </Drawer>

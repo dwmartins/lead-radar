@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AddPlansSeeder::class,
-            AddAdminUserSeeder::class,
-            AddUserSeeder::class,
             FeatureSeeder::class,
-            PlanFeatureSeeder::class
+            PlanFeatureSeeder::class,
+            AddAdminUserSeeder::class,
+            AddUserSeeder::class
         ]);
     }
 }

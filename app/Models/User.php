@@ -22,6 +22,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $role
  * @property bool $account_status
  * @property string|null $avatar
+ * @property string $currency
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string|null $last_login_at
  * @property string|null $remember_token
@@ -82,6 +83,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'avatar',
+        'currency'
     ];
 
     /**
@@ -113,6 +115,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'account_status' => 'boolean',
+            'currency' => 'string'
         ];
     }
 
@@ -361,5 +364,26 @@ class User extends Authenticatable
     {
         return $this->hasActiveSubscription()
             && $this->remainingSearches() > 0;
+    }
+
+    /**
+     * Retorna a moeda preferida do usuário.
+     */
+    public function getCurrency(): string
+    {
+        return $this->currency ?? 'BRL';
+    }
+
+    /**
+     * Retorna o símbolo da moeda do usuário.
+     */
+    public function getCurrencySymbolAttribute(): string
+    {
+        return match ($this->currency) {
+            'BRL' => 'R$',
+            'USD' => '$',
+            'EUR' => '€',
+            default => $this->currency,
+        };
     }
 }

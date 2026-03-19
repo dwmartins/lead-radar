@@ -1,5 +1,6 @@
 import AppLayout from '@/components/layout/AppLayout.vue';
 import user from './user';
+import subscription from './subscription';
 
 const DashboardPage = () => import('@/pages/admin/DashboardPage.vue');
 
@@ -14,7 +15,8 @@ export default [
                 name: 'admin.dashboard',
                 component: DashboardPage
             },
-            ...user
+            ...user,
+            ...subscription
         ]
     }
 ]

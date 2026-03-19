@@ -11,7 +11,6 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->integer('monthly_search_limit');
-            $table->decimal('price', 10, 2)->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

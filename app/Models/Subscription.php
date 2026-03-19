@@ -4,35 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
- * @property int $user_id
- * @property int $plan_id
+ * @property int|null $user_id
+ * @property int|null $plan_id
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $started_at
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property \Illuminate\Support\Carbon|null $canceled_at
  * @property \Illuminate\Support\Carbon|null $trial_ends_at
- * @property string|null $payment_gateway
- * @property string|null $payment_method
  * @property string $billing_cycle
- * @property numeric $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Plan $plan
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\Transaction|null $latestTransaction
+ * @property-read \App\Models\Plan|null $plan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereBillingCycle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCanceledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereExpiresAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePaymentGateway($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePaymentMethod($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePlanId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStartedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStatus($value)
@@ -56,10 +54,7 @@ class Subscription extends Model
         'expires_at',
         'canceled_at',
         'trial_ends_at',
-        'payment_gateway',
-        'payment_method',
-        'billing_cycle',
-        'amount',
+        'billing_cycle'
     ];
 
     /**
@@ -70,28 +65,17 @@ class Subscription extends Model
         'expires_at' => 'datetime',
         'canceled_at' => 'datetime',
         'trial_ends_at' => 'datetime',
-        'amount' => 'decimal:2',
     ];
 
     public const STATUS_ACTIVE   = 'active';
     public const STATUS_CANCELED = 'canceled';
     public const STATUS_EXPIRED  = 'expired';
+    public const STATUS_PENDING  = 'pending';
     public const STATUS_TRIAL    = 'trial';
 
     public const BILLING_MONTHLY    = 'monthly';
     public const BILLING_SEMIANNUAL = 'semiannual';
     public const BILLING_YEARLY     = 'yearly';
-
-    public const GATEWAY_STRIPE       = 'stripe';
-    public const GATEWAY_MERCADO_PAGO = 'mercado_pago';
-    public const GATEWAY_PAYPAL       = 'paypal';
-    public const GATEWAY_MANUAL       = 'manual';
-    public const GATEWAY_SEED         = 'seed';
-
-    public const METHOD_CREDIT_CARD = 'credit_card';
-    public const METHOD_PIX         = 'pix';
-    public const METHOD_BOLETO      = 'boleto';
-    public const METHOD_DEBIT_CARD  = 'debit_card';
 
     /*
     |--------------------------------------------------------------------------
@@ -113,6 +97,14 @@ class Subscription extends Model
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    /**
+     * Transações da assinatura
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     /*
@@ -213,5 +205,13 @@ class Subscription extends Model
         $this->update([
             'status' => self::STATUS_EXPIRED,
         ]);
+    }
+
+    /**
+     * Retorna a última transaction
+     */
+    public function latestTransaction(): HasOne
+    {
+        return $this->hasOne(Transaction::class)->latestOfMany();
     }
 }

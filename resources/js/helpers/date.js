@@ -1,3 +1,7 @@
+import { getLocale } from "./locale";
+
+const locale = getLocale();
+
 /**
  * Converte uma data para o formato ISO (AAAA-MM-DD).
  *
@@ -59,4 +63,23 @@ export function parseDateTime(datetime) {
     const d = new Date(dt);
 
     return isNaN(d.getTime()) ? null : d;
+}
+
+export function formateDateTime(date) {
+    return new Intl.DateTimeFormat(locale, {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: locale === 'en'
+    }).format(new Date(date));
+}
+
+export function formateDate(date) {
+    return new Intl.DateTimeFormat(locale, {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    }).format(new Date(date));
 }

@@ -20,10 +20,7 @@ return new class extends Migration
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('canceled_at')->nullable();
             $table->timestamp('trial_ends_at')->nullable();
-            $table->string('payment_gateway')->nullable();
-            $table->string('payment_method')->nullable();
             $table->string('billing_cycle');
-            $table->decimal('amount', 10, 2);
             $table->timestamps();
 
             $table->index(['user_id', 'status']);

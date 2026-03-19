@@ -13,6 +13,9 @@ export default {
     label_new_optional_password: 'New Password (optional)',
     label_confirm_password: 'Confirm Password',
     label_optional_phone: 'Phone (Optional)',
+    label_renewal: 'Renewal',
+    label_amount: 'Amount',
+    label_billing_cycle: 'Cycle',
 
     // Button labels
     btn_sign_in: 'Sign in',
@@ -24,11 +27,16 @@ export default {
     btn_save: 'Save',
     btn_loading: 'Wait...',
     btn_confirm_delete: 'Delete',
+    btn_new_subscription: 'New Subscription',
 
     // Placeholders
     placeholder_search_user: 'Search by name, email...',
     placeholder_plan: 'Plan',
     placeholder_select_plan: 'Selecione um plano',
+    placeholder_subscription_id: 'Subscription ID',
+    placeholder_expiration: 'Expiration',
+    placeholder_user: 'User',
+    placeholder_renewal: 'Renewal',
 
     // Validations
     required: "{label} is required.",
@@ -69,5 +77,15 @@ export default {
     section_access: "Access",
     section_security: "Security",
     section_plan: "Plan",
-    confirm_delete_user: "Are you sure you want to delete the user \"{name}\"?"
+    confirm_delete_user: "Are you sure you want to delete the user \"{name}\"?",
+    title_subscriptions: 'Subscriptions',
+    manage_subscriptions: 'Manage subscriptions',
+    subscription_active: "Active", 
+    subscription_canceled: "Cancelled", 
+    subscription_expired: "Expired", 
+    subscription_trial: "Trial",
+    subscription_pending: 'Pending',
+    cycle_monthly: 'Monthly',
+    cycle_semiannual: 'Semiannual',
+    cycle_yearly: 'Yearly'
 }

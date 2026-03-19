@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Plan;
+use App\Models\PlanPrice;
 use App\Models\Subscription;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -28,16 +30,37 @@ class AddUserSeeder extends Seeder
         );
 
         if ($plan && !$user->hasActiveSubscription()) {
-            $user->subscriptions()->create([
-                'plan_id'         => $plan->id,
-                'started_at'      => now(),
-                'amount'          => $plan->price,
-                'expires_at'      => now()->addMonth(),
-                'status'          => Subscription::STATUS_ACTIVE,
-                'payment_gateway' => Subscription::GATEWAY_SEED,
-                'payment_method'  => Subscription::METHOD_PIX,
-                'billing_cycle'   => Subscription::BILLING_MONTHLY
+
+            $planPrice = $plan->prices()
+                ->where('currency', 'BRL')
+                ->where('is_active', true)
+                ->first();
+
+            $subscription = $user->subscriptions()->create([
+                'plan_id'       => $plan->id,
+                'started_at'    => now(),
+                'expires_at'    => now()->addMonth(),
+                'status'        => Subscription::STATUS_ACTIVE,
+                'billing_cycle' => Subscription::BILLING_MONTHLY
             ]);
+
+            if ($planPrice) {
+                Transaction::create([
+                    'subscription_id'         => $subscription->id,
+                    'plan_price_id'           => $planPrice->id,
+                    'amount'                  => $planPrice->price,
+                    'currency'                => $planPrice->currency,
+                    'status'                  => Transaction::STATUS_PAID,
+                    'payment_gateway'         => Transaction::GATEWAY_SEED,
+                    'payment_method'          => Transaction::METHOD_CREDIT_CARD,
+                    'gateway_transaction_id'  => 'seed_' . uniqid(),
+                    'paid_at'                 => now(),
+                    'expires_at'              => $subscription->expires_at,
+                    'meta'                    => [
+                        'source' => 'seeder'
+                    ],
+                ]);
+            }
         }
     }
 }

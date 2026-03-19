@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->boolean('account_status')->default(true);
             $table->string('avatar', 100)->nullable();
+            $table->string('currency', 3)->default('BRL');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();

@@ -10,7 +10,8 @@ export const useAuthStore = defineStore('auth', () => {
         role: null,
         plan_id: null,
         email_verified_at: null,
-        avatar_url: null
+        avatar_url: null,
+        currency: null
     });
 
     const isLoggedIn = ref(false);
@@ -83,6 +84,24 @@ export const useAuthStore = defineStore('auth', () => {
         return role.charAt(0).toUpperCase() + role.slice(1);
     }
 
+    /**
+     * Retorna a moeda preferida do usuário.
+     */
+    function getCurrency() {
+        return user.currency ?? 'BRL'
+    }
+
+    /**
+     * Retorna o símbolo da moeda do usuário.
+     */
+    function getCurrencySymbolAttribute() {
+        switch (user.currency) {
+            case 'BRL': return 'R$';
+            case 'USD': return '$';
+            default: return currency;
+        }
+    }
+
     return {
         user,
         getUser,
@@ -91,6 +110,8 @@ export const useAuthStore = defineStore('auth', () => {
         update,
         updateAvatar,
         clean,
-        getRole
+        getRole,
+        getCurrency,
+        getCurrencySymbolAttribute
     }
 });

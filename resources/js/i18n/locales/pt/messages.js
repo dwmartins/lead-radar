@@ -13,6 +13,9 @@ export default {
     label_new_optional_password: 'Nova Senha (opcional)',
     label_confirm_password: 'Confirmar Senha',
     label_optional_phone: 'Telefone (Opcional)',
+    label_renewal: 'Renovação',
+    label_amount: 'Quantia',
+    label_billing_cycle: 'Ciclo',
 
     // Button labels
     btn_sign_in: 'Entrar',
@@ -24,11 +27,16 @@ export default {
     btn_save: 'Salvar',
     btn_loading: 'Aguarde...',
     btn_confirm_delete: 'Excluir',
+    btn_new_subscription: 'Nova Assinatura',
 
     // Placeholders
     placeholder_search_user: 'Buscar por nome, e-mail...',
     placeholder_plan: 'Plano',
     placeholder_select_plan: 'Selecione um plano',
+    placeholder_subscription_id: 'Id da assinatura',
+    placeholder_expiration: 'Expiração',
+    placeholder_user: 'Usuário',
+    placeholder_renewal: 'Renovação',
     
     // Validations
     required: "O campo {label} é obrigatório.",
@@ -69,5 +77,15 @@ export default {
     section_access: "Acesso",
     section_security: "Segurança",
     section_plan: "Plano",
-    confirm_delete_user: "Tem certeza que deseja excluir o usuário \"{name}\"?"
+    confirm_delete_user: "Tem certeza que deseja excluir o usuário \"{name}\"?",
+    title_subscriptions: 'Assinaturas',
+    manage_subscriptions: 'Gerenciar assinaturas',
+    subscription_active: "Ativa",
+    subscription_canceled: "Cancelada",
+    subscription_expired: "Expirada",
+    subscription_trial: "Teste",
+    subscription_pending: 'Pendente',
+    cycle_monthly: 'Mensal',
+    cycle_semiannual: 'Semestral',
+    cycle_yearly: 'Anual'
 }
