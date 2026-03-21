@@ -35,8 +35,8 @@ class SubscriptionRequest extends FormRequest
             'notes'         => ['nullable', 'string', new NoMaliciousContent()],
             
             'payment_status'  => ['required', 'in:pending,paid,failed,refunded'],
-            'payment_method'  => ['required_if:payment_status,paid', 'string'],
-            'payment_paid_at' => ['required_if:payment_status,paid', 'date'],
+            'payment_method'  => ['nullable', 'required_if:payment_status,paid', 'string'],
+            'payment_paid_at' => ['nullable', 'required_if:payment_status,paid', 'date'],
         ];
     }
 }
