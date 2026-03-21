@@ -296,7 +296,7 @@ class User extends Authenticatable
      */
     public function hasActiveSubscription(): bool
     {
-        return $this->getActiveSubscription()?->isValid() ?? false;
+        return $this->getActiveSubscription()?->isActive() ?? false;
     }
 
     /*

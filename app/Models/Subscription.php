@@ -7,6 +7,44 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $plan_id
+ * @property string $status
+ * @property string $billing_cycle
+ * @property string|null $stripe_subscription_id
+ * @property string|null $stripe_customer_id
+ * @property string|null $stripe_status
+ * @property bool $is_manual
+ * @property string|null $note
+ * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $latestTransaction
+ * @property-read int|null $latest_transaction_count
+ * @property-read \App\Models\Plan|null $plan
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereBillingCycle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereIsManual($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereNote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription wherePlanId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripeCustomerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripeStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripeSubscriptionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Subscription extends Model
 {
     /**
@@ -45,9 +83,8 @@ class Subscription extends Model
     public const STATUS_PENDING  = 'pending';
     public const STATUS_EXPIRED  = 'expired';
     
-    public const BILLING_MONTHLY    = 'monthly';
-    public const BILLING_SEMIANNUAL = 'semiannual';
-    public const BILLING_YEARLY     = 'yearly';
+    public const BILLING_MONTH    = 'month';
+    public const BILLING_YEAR     = 'year';
 
     /*
     |--------------------------------------------------------------------------
@@ -149,9 +186,8 @@ class Subscription extends Model
     public function getCycleInMonths(): int
     {
         return match ($this->billing_cycle) {
-            self::BILLING_MONTHLY => 1,
-            self::BILLING_SEMIANNUAL => 6,
-            self::BILLING_YEARLY => 12,
+            self::BILLING_MONTH => 1,
+            self::BILLING_YEAR => 12,
             default => 1,
         };
     }

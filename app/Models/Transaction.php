@@ -6,6 +6,41 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property int $id
+ * @property int $subscription_id
+ * @property int|null $plan_price_id
+ * @property numeric $amount
+ * @property string $currency
+ * @property string $status
+ * @property string|null $payment_gateway
+ * @property string|null $payment_method
+ * @property string|null $gateway_transaction_id
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property array<array-key, mixed>|null $meta
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $formatted_amount
+ * @property-read \App\Models\PlanPrice|null $planPrice
+ * @property-read \App\Models\Subscription $subscription
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereGatewayTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereMeta($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePaidAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePaymentGateway($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePaymentMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePlanPriceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereSubscriptionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Transaction extends Model
 {
     protected $table = 'transactions';
@@ -53,7 +88,7 @@ class Transaction extends Model
 
     public const METHOD_CREDIT_CARD = 'credit_card';
     public const METHOD_PIX         = 'pix';
-    public const METHOD_BOLETO      = 'boleto';
+    public const METHOD_BOLETO      = 'bank_slip';
     public const METHOD_DEBIT_CARD  = 'debit_card';
 
     /*

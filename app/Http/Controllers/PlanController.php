@@ -15,7 +15,7 @@ class PlanController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $plans = Plan::with('features')->get();
+        $plans = Plan::with('features', 'prices')->get();
         return response()->json($plans);
     }
 }

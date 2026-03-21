@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SubscriptionRequest;
 use App\Models\Plan;
+use App\Models\PlanPrice;
 use App\Models\Subscription;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Services\SubscriptionService;
 use Illuminate\Http\JsonResponse;
@@ -68,7 +70,7 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Registra uma nova subscription
+     * Registra uma nova subscription manual
      * 
      * @param SubscriptionRequest
      */
@@ -76,13 +78,14 @@ class SubscriptionController extends Controller
     {
         $data = $request->validated();
 
-        $plan = Plan::where('id', $data['plan_id'])
+        $planPrice = PlanPrice::with('plan')
+            ->where('id', $data['plan_price_id'])
             ->where('is_active', true)
             ->first();
 
-        if(!$plan) {
+        if(!$planPrice) {
             return response()->json([
-                'message' => 'Plano não encontrado.'
+                'message' => 'Preço do plano não encontrado.'
             ], 404);
         }
 
@@ -104,12 +107,22 @@ class SubscriptionController extends Controller
         }
 
         try {
-            $subscription = SubscriptionService::createManual($user, $plan, $data['status']);
+            $subscription = SubscriptionService::createManual(
+                user: $user,
+                planPrice: $planPrice,
+                expires_at: $data['expires_at'] ?? null,
+                status: $data['status'] ?? null,
+                note: $data['note'] ?? null,
+                payment_status: $data['payment_status'],
+                payment_method: $data['payment_method'],
+                payment_paid_at: $data['payment_paid_at'],
+            );
 
             return response()->json([
                 'message' => 'Assinatura criada com sucesso.',
                 'subscription' => $subscription
             ], 201);
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()

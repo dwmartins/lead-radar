@@ -18,6 +18,11 @@ export default {
     label_billing_cycle: 'Ciclo',
     label_expires_at: 'Data de expiração',
     label_trial_ends_at: 'Fim do teste',
+    label_currency: 'Moeda',
+    label_note: 'Notas',
+    label_payment_status: 'Status do pagamento',
+    label_payment_method: 'Método de pagamento',
+    label_payment_paid_at: 'Data do pagamento',
 
     // Button labels
     btn_sign_in: 'Entrar',
@@ -38,9 +43,13 @@ export default {
     placeholder_subscription_id: 'Id da assinatura',
     placeholder_expiration: 'Expiração',
     placeholder_user: 'Usuário',
-    placeholder_renewal: 'Renovação',
+    placeholder_renewal_date: 'Data da renovação',
     placeholder_trial_ends_at: 'Período de teste',
     placeholder_select_user: 'Selecione um usuário',
+    placeholder_subscription_note: 'Notas da assinatura...',
+    placeholder_payment_status: 'Status do pagamento',
+    placeholder_payment_method: 'Método de pagamento',
+    placeholder_payment_paid_at: 'Data do pagamento',
     
     // Validations
     required: "O campo {label} é obrigatório.",
@@ -89,7 +98,7 @@ export default {
     subscription_expired: "Expirada",
     subscription_trial: "Teste",
     subscription_pending: 'Pendente',
-    cycle_monthly: 'Mensal',
+    cycle_month: 'Mensal',
     cycle_semiannual: 'Semestral',
     cycle_yearly: 'Anual',
     title_dialog_edit_subscription: 'Editar Assinatura',
@@ -97,4 +106,11 @@ export default {
     billing_cycle: 'Ciclo de cobrança',
     subscription_edit_hint: 'Alterar o plano pode impactar limites e cobranças do usuário.',
     renewal_date_past: 'A data de renovação não pode estar no passado',
+    payment_date_future: 'A data de pagamento não pode estar no futuro.',
+    payment_status_pending: 'Pendente',
+    payment_status_paid: 'Paga',
+    payment_method_credit_card: 'Cartão de credito',
+    payment_method_pix: 'PIX',
+    payment_method_bank_slip: 'Boleto',
+    payment_method_debit_card: 'Cartão de debito',
 }

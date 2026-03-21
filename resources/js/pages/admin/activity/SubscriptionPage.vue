@@ -20,6 +20,7 @@ import SubscriptionsSkeleton from "@/components/skeletons/SubscriptionsSkeleton.
 import SubscriptionFormDialog from "@/components/dialog/subscription/SubscriptionFormDialog.vue";
 import userService from "@/services/user.service";
 import EmptyData from "@/components/ui/EmptyData.vue";
+import AddManualSubscriptionDialog from "@/components/dialog/subscription/AddManualSubscriptionDialog.vue";
 
 const t = i18n.global.t;
 const dateFormat   = getLocale() === 'pt' ? 'dd/mm/yy' : 'mm/dd/yy';
@@ -63,7 +64,8 @@ const currentPage  = ref(1);
 const itemsPerPage = ref(7);
 
 const dialogVisible = reactive({
-    form: false,
+    addSubscription: false,
+    updateSubscription: false,
     detail: false
 });
 
@@ -160,7 +162,7 @@ const onCloseDialog = async () => {
                     :label="isMobile ? '' : $t('messages.btn_new_subscription')"
                     icon="pi pi-plus"
                     size="small"
-                    @click="openDialog('form')"
+                    @click="openDialog('addSubscription')"
                 />
             </div>
         </div>
@@ -202,7 +204,7 @@ const onCloseDialog = async () => {
                             <DatePicker
                                 v-model="filters.expires_at.value"
                                 :dateFormat="dateFormat"
-                                :placeholder="$t('messages.placeholder_renewal')"
+                                :placeholder="$t('messages.placeholder_renewal_date')"
                                 fluid
                             />
                         </div>
@@ -321,7 +323,7 @@ const onCloseDialog = async () => {
                                         variant="text" 
                                         aria-label="Filter" 
                                         rounded
-                                        @click="openDialog('form', data)"
+                                        @click="openDialog('updateSubscription', data)"
                                     />
                                     <Button 
                                         icon="pi pi-eye" 
@@ -341,10 +343,17 @@ const onCloseDialog = async () => {
         </div>
 
         <SubscriptionFormDialog
-            v-model="dialogVisible.form"
+            v-model="dialogVisible.updateSubscription"
             :plans="plans"
             :users="users"
             :subscription="subscription"
+            @saved="onCloseDialog"
+        />
+
+        <AddManualSubscriptionDialog 
+            v-model="dialogVisible.addSubscription"
+            :plans="plans"
+            :users="users"
             @saved="onCloseDialog"
         />
     </section>

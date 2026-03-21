@@ -18,6 +18,11 @@ export default {
     label_billing_cycle: 'Cycle',
     label_expires_at: 'Expiration date',
     label_trial_ends_at: 'Trial end date',
+    label_currency: 'Currency',
+    label_note: 'Notes',
+    label_payment_status: 'Status do pagamento',
+    label_payment_method: 'Método de pagamento',
+    label_payment_paid_at: 'Data do pagamento',
 
     // Button labels
     btn_sign_in: 'Sign in',
@@ -34,13 +39,17 @@ export default {
     // Placeholders
     placeholder_search_user: 'Search by name, email...',
     placeholder_plan: 'Plan',
-    placeholder_select_plan: 'Selecione um plano',
+    placeholder_select_plan: 'Select a plan',
     placeholder_subscription_id: 'Subscription ID',
     placeholder_expiration: 'Expiration',
     placeholder_user: 'User',
-    placeholder_renewal: 'Renewal',
+    placeholder_renewal_date: 'Renewal date',
     placeholder_trial_ends_at: 'Trial end date',
     placeholder_select_user: 'Select a user',
+    placeholder_subscription_note: 'Subscription notes...',
+    placeholder_payment_status: 'Status do pagamento',
+    placeholder_payment_method: 'Método de pagamento',
+    placeholder_payment_paid_at: 'Data do pagamento',
 
     // Validations
     required: "{label} is required.",
@@ -89,7 +98,7 @@ export default {
     subscription_expired: "Expired", 
     subscription_trial: "Trial",
     subscription_pending: 'Pending',
-    cycle_monthly: 'Monthly',
+    cycle_month: 'Monthly',
     cycle_semiannual: 'Semiannual',
     cycle_yearly: 'Yearly',
     title_dialog_edit_subscription: 'Edit Subscription',
@@ -97,4 +106,11 @@ export default {
     billing_cycle: 'Billing cycle',
     subscription_edit_hint: 'Changing the plan may impact user limits and charges.',
     renewal_date_past: 'The renewal date cannot be in the past tense',
+    payment_date_future: 'The payment date cannot be in the future.',
+    payment_status_pending: 'Pending',
+    payment_status_paid: 'Paid',
+     payment_method_credit_card: 'Credit card',
+    payment_method_pix: 'PIX',
+    payment_method_bank_slip: 'Bank slip',
+    payment_method_debit_card: 'Debit card',
 }

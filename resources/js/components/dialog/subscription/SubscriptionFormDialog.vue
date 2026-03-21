@@ -234,7 +234,7 @@ watch(() => props.modelValue, (opened) => {
                     <Select
                         v-model="subscription.billing_cycle"
                         :options="[
-                            { label: $t(`messages.cycle_monthly`), value: 'monthly' },
+                            { label: $t(`messages.cycle_month`), value: 'monthly' },
                             { label: $t(`messages.cycle_semiannual`), value: 'semiannual' },
                             { label: $t(`messages.cycle_yearly`), value: 'yearly' }
                         ]"

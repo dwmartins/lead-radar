@@ -116,3 +116,22 @@ export function isPastDate(date) {
 
     return inputDate < today;
 };
+
+/**
+ * Verifica se uma data está no futuro (ignora horário)
+ *
+ * @param {string|Date|null|undefined} date
+ *
+ * @returns {boolean}
+ */
+export function isFutureDate(date) {
+    if (!date) return false;
+
+    const inputDate = new Date(date);
+    const today = new Date();
+
+    inputDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate > today;
+};

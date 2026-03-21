@@ -43,7 +43,7 @@ class AddUserSeeder extends Seeder
             $subscription = $user->subscriptions()->create([
                 'plan_id'       => $plan->id,
                 'status'        => Subscription::STATUS_ACTIVE,
-                'billing_cycle' => Subscription::BILLING_MONTHLY,
+                'billing_cycle' => Subscription::BILLING_MONTH,
                 'expires_at'    => now()->addMonth(),
                 'is_manual'     => true,
                 'note'          => 'Criado via seeder',

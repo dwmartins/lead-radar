@@ -51,8 +51,8 @@ class PlanPrice extends Model
         'is_active',
         'stripe_price_id',
         'type',
-        'interval',
-        'interval_count'
+        'interval', // month ou year
+        'interval_count' // 1 ou mais (quantidade de meses ou anos)
     ];
 
     /**
@@ -66,6 +66,9 @@ class PlanPrice extends Model
 
     public const TYPE_RECURRING = 'recurring';
     public const TYPE_ONE_TIME  = 'one_time';
+
+    public const INTERVAL_MONTH = 'month';
+    public const INTERVAL_YEAR = 'year';
 
     /*
     |--------------------------------------------------------------------------
