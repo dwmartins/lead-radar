@@ -1,5 +1,5 @@
+import { formatDateTimeToUTC, formatDateToUTC, parseDate, parseDateTime } from '@/helpers/date';
 import { useRoute, useRouter } from 'vue-router';
-import { parseDate, parseDateTime, safeISOToDate, safeISOToDateTime } from '@/helpers/date';
 
 export function useQueryFilters(filters, currentPage) {
     const route = useRoute();
@@ -52,12 +52,12 @@ export function useQueryFilters(filters, currentPage) {
             if (value == null || value === '') continue;
 
             if (type === 'date') {
-                query[key] = safeISOToDate(value);
+                query[key] = formatDateToUTC(value);
                 continue;
             }
 
             if (type === 'datetime') {
-                query[key] = safeISOToDateTime(value);
+                query[key] = formatDateTimeToUTC(value);
                 continue;
             }
 
@@ -79,7 +79,7 @@ export function useQueryFilters(filters, currentPage) {
             if (value == null || value === '') continue;
 
             if (type === 'date') {
-                cloneFilters[key] = safeISOToDate(value);
+                cloneFilters[key] = formatDateToUTC(value);
                 continue;
             }
 

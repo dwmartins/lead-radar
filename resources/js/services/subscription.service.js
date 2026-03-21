@@ -33,4 +33,32 @@ export default {
 
         return response.data;
     },
+
+    /**
+     * Registra uma nova subscription
+     * 
+     * @param {Object} data 
+     * @returns {Promise<{ message: string, subscription: Object }>}
+     * Retorna um objeto contendo:
+     * - message: Mensagem de sucesso da API
+     * - subscription: Subscription criada
+     */
+    async create(data) {
+        const response = await axios.post(`${API_URL}/subscription`, data);
+        return response.data;
+    },
+
+    /**
+     * Atualiza uma subscription existente.
+     * 
+     * @param {Object} data 
+     * @returns {Promise<{ message: string, subscription: Object }>}
+     * Retorna um objeto contendo:
+     * - message: Mensagem de sucesso da API
+     * - subscription: subscription atualizada
+     */
+    async update(data) {
+        const response = await axios.put(`${API_URL}/subscription`, data);
+        return response.data;
+    },
 }

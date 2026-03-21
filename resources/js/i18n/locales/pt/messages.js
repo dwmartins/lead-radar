@@ -16,6 +16,8 @@ export default {
     label_renewal: 'Renovação',
     label_amount: 'Quantia',
     label_billing_cycle: 'Ciclo',
+    label_expires_at: 'Data de expiração',
+    label_trial_ends_at: 'Fim do teste',
 
     // Button labels
     btn_sign_in: 'Entrar',
@@ -37,6 +39,8 @@ export default {
     placeholder_expiration: 'Expiração',
     placeholder_user: 'Usuário',
     placeholder_renewal: 'Renovação',
+    placeholder_trial_ends_at: 'Período de teste',
+    placeholder_select_user: 'Selecione um usuário',
     
     // Validations
     required: "O campo {label} é obrigatório.",
@@ -87,5 +91,10 @@ export default {
     subscription_pending: 'Pendente',
     cycle_monthly: 'Mensal',
     cycle_semiannual: 'Semestral',
-    cycle_yearly: 'Anual'
+    cycle_yearly: 'Anual',
+    title_dialog_edit_subscription: 'Editar Assinatura',
+    title_dialog_new_subscription: 'Nova Assinatura',
+    billing_cycle: 'Ciclo de cobrança',
+    subscription_edit_hint: 'Alterar o plano pode impactar limites e cobranças do usuário.',
+    renewal_date_past: 'A data de renovação não pode estar no passado',
 }

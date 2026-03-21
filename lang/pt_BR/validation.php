@@ -203,5 +203,9 @@ return [
         'role' => 'Função',
         'account_status' => 'Status da conta',
         'plan_id' => 'Plano id',
+        'status' => 'Status',
+        'billing_cycle' => 'Ciclo de pagamento',
+        'expires_at' => 'Data de renovação',
+        'user_id' => 'Usuário'
     ],
 ];

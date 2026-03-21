@@ -16,6 +16,8 @@ export default {
     label_renewal: 'Renewal',
     label_amount: 'Amount',
     label_billing_cycle: 'Cycle',
+    label_expires_at: 'Expiration date',
+    label_trial_ends_at: 'Trial end date',
 
     // Button labels
     btn_sign_in: 'Sign in',
@@ -37,6 +39,8 @@ export default {
     placeholder_expiration: 'Expiration',
     placeholder_user: 'User',
     placeholder_renewal: 'Renewal',
+    placeholder_trial_ends_at: 'Trial end date',
+    placeholder_select_user: 'Select a user',
 
     // Validations
     required: "{label} is required.",
@@ -87,5 +91,10 @@ export default {
     subscription_pending: 'Pending',
     cycle_monthly: 'Monthly',
     cycle_semiannual: 'Semiannual',
-    cycle_yearly: 'Yearly'
+    cycle_yearly: 'Yearly',
+    title_dialog_edit_subscription: 'Edit Subscription',
+    title_dialog_new_subscription: 'New Subscription',
+    billing_cycle: 'Billing cycle',
+    subscription_edit_hint: 'Changing the plan may impact user limits and charges.',
+    renewal_date_past: 'The renewal date cannot be in the past tense',
 }

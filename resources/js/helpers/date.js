@@ -10,7 +10,7 @@ const locale = getLocale();
  * @returns {string|null}
  *  Data ISO (AAAA-MM-DD) ou nulo se a data for inválida.
  */
-export function safeISOToDate(date) {
+export function formatDateToUTC(date) {
     const d = new Date(date);
     if (isNaN(d.getTime())) return null;
     return d.toISOString().split("T")[0];
@@ -24,7 +24,7 @@ export function safeISOToDate(date) {
  * @returns {string|null}
  *  DateTime ISO (AAAA-MM-DD HH:mm:ss) ou nulo se o datetime for inválido.
  */
-export function safeISOToDateTime(datetime) {
+export function formatDateTimeToUTC(datetime) {
     const d = new Date(datetime);
     if (isNaN(d.getTime())) return null;
     return d.toISOString().slice(0, 19).replace('T', ' ');
@@ -65,7 +65,14 @@ export function parseDateTime(datetime) {
     return isNaN(d.getTime()) ? null : d;
 }
 
-export function formateDateTime(date) {
+/**
+ * Formata um datetime para string localizada
+ *
+ * @param {string|Date|null|undefined} date
+ *
+ * @returns {string}
+ */
+export function formatDateTime(date) {
     return new Intl.DateTimeFormat(locale, {
         day: '2-digit',
         month: '2-digit',
@@ -76,10 +83,36 @@ export function formateDateTime(date) {
     }).format(new Date(date));
 }
 
-export function formateDate(date) {
+/**
+ * Formata uma data para string localizada (sem horário)
+ *
+ * @param {string|Date|null|undefined} date
+ *
+ * @returns {string}
+ */
+export function formatDate(date) {
     return new Intl.DateTimeFormat(locale, {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
     }).format(new Date(date));
 }
+
+/**
+ * Verifica se uma data está no passado (ignora horário)
+ *
+ * @param {string|Date|null|undefined} date
+ *
+ * @returns {boolean}
+ */
+export function isPastDate(date) {
+    if (!date) return false;
+
+    const inputDate = new Date(date);
+    const today = new Date();
+
+    inputDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate < today;
+};

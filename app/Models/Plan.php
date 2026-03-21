@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property int $monthly_search_limit
  * @property bool $is_active
+ * @property string|null $stripe_product_id
+ * @property int $trial_days
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $features
@@ -26,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereMonthlySearchLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereStripeProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereTrialDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Plan whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -41,17 +45,20 @@ class Plan extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name', 
-        'monthly_search_limit', 
-        'is_active'
+        'name',
+        'monthly_search_limit',
+        'is_active',
+        'stripe_product_id',
+        'trial_days',
     ];
 
     /**
      *  atributos que devem ser convertidos.
      */
     protected $casts = [
-        'is_active'            => 'boolean',
+        'is_active' => 'boolean',
         'monthly_search_limit' => 'integer',
+        'trial_days' => 'integer',
     ];
 
     /*

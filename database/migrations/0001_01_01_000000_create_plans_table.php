@@ -12,6 +12,8 @@ return new class extends Migration {
             $table->string('name');
             $table->integer('monthly_search_limit');
             $table->boolean('is_active')->default(true);
+            $table->string('stripe_product_id')->nullable();
+            $table->integer('trial_days')->default(0);
             $table->timestamps();
         });
     }

@@ -203,5 +203,9 @@ return [
         'role' => 'Role',
         'account_status' => 'Account status',
         'plan_id' => 'Plan ID',
+        'status' => 'Status',
+        'billing_cycle' => 'Billing cycle',
+        'expires_at' => 'Renewal',
+        'user_id' => 'User'
     ],
 ];

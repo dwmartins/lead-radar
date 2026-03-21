@@ -19,8 +19,20 @@ class AddPlansSeeder extends Seeder
                 'monthly_search_limit' => 20,
                 'is_active' => true,
                 'prices' => [
-                    ['price' => 49.90, 'currency' => 'BRL'],
-                    ['price' => 20.90,  'currency' => 'USD'],
+                    [
+                        'price' => 49.90,
+                        'currency' => 'BRL',
+                        'type' => 'recurring',
+                        'interval' => 'month',
+                        'interval_count' => 1,
+                    ],
+                    [
+                        'price' => 20.90,
+                        'currency' => 'USD',
+                        'type' => 'recurring',
+                        'interval' => 'month',
+                        'interval_count' => 1,
+                    ],
                 ],
             ],
             [
@@ -28,8 +40,20 @@ class AddPlansSeeder extends Seeder
                 'monthly_search_limit' => 40,
                 'is_active' => true,
                 'prices' => [
-                    ['price' => 89.90, 'currency' => 'BRL'],
-                    ['price' => 49.90,  'currency' => 'USD'],
+                    [
+                        'price' => 89.90,
+                        'currency' => 'BRL',
+                        'type' => 'recurring',
+                        'interval' => 'month',
+                        'interval_count' => 1,
+                    ],
+                    [
+                        'price' => 49.90,
+                        'currency' => 'USD',
+                        'type' => 'recurring',
+                        'interval' => 'month',
+                        'interval_count' => 1,
+                    ],
                 ],
             ],
             [
@@ -37,8 +61,20 @@ class AddPlansSeeder extends Seeder
                 'monthly_search_limit' => 60,
                 'is_active' => true,
                 'prices' => [
-                    ['price' => 120.90, 'currency' => 'BRL'],
-                    ['price' => 89.90,  'currency' => 'USD'],
+                    [
+                        'price' => 120.90,
+                        'currency' => 'BRL',
+                        'type' => 'recurring',
+                        'interval' => 'month',
+                        'interval_count' => 1,
+                    ],
+                    [
+                        'price' => 89.90,
+                        'currency' => 'USD',
+                        'type' => 'recurring',
+                        'interval' => 'month',
+                        'interval_count' => 1,
+                    ],
                 ],
             ],
         ];
@@ -55,8 +91,11 @@ class AddPlansSeeder extends Seeder
             foreach ($planData['prices'] as $priceData) {
                 PlanPrice::updateOrCreate(
                     [
-                        'plan_id'  => $plan->id,
-                        'currency' => $priceData['currency'],
+                        'plan_id'        => $plan->id,
+                        'currency'       => $priceData['currency'],
+                        'type'           => $priceData['type'],
+                        'interval'       => $priceData['interval'],
+                        'interval_count' => $priceData['interval_count'],
                     ],
                     [
                         'price'     => $priceData['price'],

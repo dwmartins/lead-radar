@@ -25,11 +25,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $currency
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string|null $last_login_at
+ * @property int|null $stripe_customer_id
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Subscription|null $activeSubscription
  * @property-read string|null $avatar_url
+ * @property-read string $currency_symbol
  * @property-read string $full_name
  * @property-read \App\Models\Plan|null $plan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LeadCaptured> $leadCaptured
@@ -52,6 +54,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static Builder<static>|User whereAccountStatus($value)
  * @method static Builder<static>|User whereAvatar($value)
  * @method static Builder<static>|User whereCreatedAt($value)
+ * @method static Builder<static>|User whereCurrency($value)
  * @method static Builder<static>|User whereEmail($value)
  * @method static Builder<static>|User whereEmailVerifiedAt($value)
  * @method static Builder<static>|User whereId($value)
@@ -62,6 +65,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static Builder<static>|User wherePhone($value)
  * @method static Builder<static>|User whereRememberToken($value)
  * @method static Builder<static>|User whereRole($value)
+ * @method static Builder<static>|User whereStripeCustomerId($value)
  * @method static Builder<static>|User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -83,7 +87,8 @@ class User extends Authenticatable
         'email',
         'phone',
         'avatar',
-        'currency'
+        'currency',
+        'stripe_customer_id'
     ];
 
     /**
@@ -261,8 +266,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Subscription::class)
             ->whereIn('status', [
-                Subscription::STATUS_ACTIVE,
-                Subscription::STATUS_TRIAL
+                Subscription::STATUS_ACTIVE
             ])
             ->where(function ($q) {
                 $q->whereNull('expires_at')
@@ -382,7 +386,6 @@ class User extends Authenticatable
         return match ($this->currency) {
             'BRL' => 'R$',
             'USD' => '$',
-            'EUR' => '€',
             default => $this->currency,
         };
     }

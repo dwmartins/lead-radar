@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubscriptionRequest;
+use App\Models\Plan;
 use App\Models\Subscription;
+use App\Models\User;
+use App\Services\SubscriptionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -60,6 +64,63 @@ class SubscriptionController extends Controller
                 'per_page' => $subscriptions->perPage(),
                 'total' => $subscriptions->total(),
             ]
+        ]);
+    }
+
+    /**
+     * Registra uma nova subscription
+     * 
+     * @param SubscriptionRequest
+     */
+    public function store(SubscriptionRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        $plan = Plan::where('id', $data['plan_id'])
+            ->where('is_active', true)
+            ->first();
+
+        if(!$plan) {
+            return response()->json([
+                'message' => 'Plano não encontrado.'
+            ], 404);
+        }
+
+        /** @var User|null $user */
+        $user = User::where('id', $data['user_id'])
+            ->where('account_status', true)
+            ->first();
+
+        if(!$user) {
+            return response()->json([
+                'message' => 'Usuário não encontrado.'
+            ], 404);
+        }
+
+        if($user->hasActiveSubscription()) {
+            return response()->json([
+                'message' => 'Esse usuário já possui assinatura ativa.'
+            ], 403);
+        }
+
+        try {
+            $subscription = SubscriptionService::createManual($user, $plan, $data['status']);
+
+            return response()->json([
+                'message' => 'Assinatura criada com sucesso.',
+                'subscription' => $subscription
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 403);
+        }
+
+        $subscription = Subscription::create($data);
+
+        return response()->json([
+            'messages' => 'Assinatura criada com sucesso.',
+            'subscription' => $subscription
         ]);
     }
 }

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('currency', 3)->default('BRL');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('last_login_at')->nullable();
+            $table->integer('stripe_customer_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

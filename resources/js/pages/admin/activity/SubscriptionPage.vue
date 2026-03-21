@@ -14,9 +14,12 @@ import { useQueryFilters } from "@/composables/useQueryFilters";
 import { showAlert } from "@/helpers/alert";
 import subscriptionService from "@/services/subscription.service";
 import Tag from "primevue/tag";
-import { formateDate, formateDateTime } from "@/helpers/date";
+import { formatDate, formatDateTime } from "@/helpers/date";
 import { useMobile } from "@/composables/useMobile";
 import SubscriptionsSkeleton from "@/components/skeletons/SubscriptionsSkeleton.vue";
+import SubscriptionFormDialog from "@/components/dialog/subscription/SubscriptionFormDialog.vue";
+import userService from "@/services/user.service";
+import EmptyData from "@/components/ui/EmptyData.vue";
 
 const t = i18n.global.t;
 const dateFormat   = getLocale() === 'pt' ? 'dd/mm/yy' : 'mm/dd/yy';
@@ -34,7 +37,7 @@ const subscription_status = [
     { name: t('messages.subscription_active'),   code: 'active' },
     { name: t('messages.subscription_canceled'), code: 'canceled' },
     { name: t('messages.subscription_expired'),  code: 'expired' },
-    { name: t('messages.subscription_pending'),  code: 'expired' },
+    { name: t('messages.subscription_pending'),  code: 'pending' },
     { name: t('messages.subscription_trial'),    code: 'trial' }
 ];
 
@@ -47,6 +50,7 @@ const subscriptionStatusMap = {
 };
 
 const subscriptions = ref([]);
+const subscription  = ref(null);
 const users         = ref([]);
 const plans         = ref([]);
 
@@ -58,12 +62,18 @@ const pagination   = ref({});
 const currentPage  = ref(1);
 const itemsPerPage = ref(7);
 
+const dialogVisible = reactive({
+    form: false,
+    detail: false
+});
+
 const { applyFromRoute, syncToRoute, buildApiFilters } = useQueryFilters(filters, currentPage);
 
 onMounted(async () => {
     applyFromRoute();
     await fetchSubscriptions(currentPage.value);
     fetchPlans();
+    fetchUsers();
 });
 
 const fetchSubscriptions = async (page = 1) => {
@@ -93,6 +103,18 @@ const fetchPlans = async () => {
     }
 }
 
+const fetchUsers = async () => {
+    try {
+        loadingUsers.value = true;
+        const response = await userService.getAll(['id', 'name', 'last_name', 'email']);
+        users.value = response;
+    } catch (error) {
+        showAlert('error', error.response?.data);
+    } finally {
+        loadingUsers.value = false;
+    }
+}
+
 const handlePagination = (response) => {
     pagination.value = response.pagination ?? {};
     currentPage.value = (response.pagination?.current_page) ?? 1;
@@ -113,6 +135,17 @@ const onClearSearch = () => {
     fetchSubscriptions();
 }
 
+const openDialog = (dialogType, data = null) => {
+    subscription.value = null
+
+    subscription.value = data ? {...data} : null;
+    dialogVisible[dialogType] = true;
+}
+
+const onCloseDialog = async () => {
+    await fetchSubscriptions();
+}
+
 </script>
 
 <template>
@@ -127,6 +160,7 @@ const onClearSearch = () => {
                     :label="isMobile ? '' : $t('messages.btn_new_subscription')"
                     icon="pi pi-plus"
                     size="small"
+                    @click="openDialog('form')"
                 />
             </div>
         </div>
@@ -200,10 +234,10 @@ const onClearSearch = () => {
                         </div>
                     </form>
 
-                    <SubscriptionsSkeleton v-if="loading"/>
+                    <SubscriptionsSkeleton v-show="loading"/>
 
                     <DataTable
-                        v-if="!loading && subscriptions.length"
+                        v-show="!loading && subscriptions.length"
                         :value="subscriptions"
                         :lazy="true"
                         :totalRecords="pagination.total"
@@ -221,7 +255,7 @@ const onClearSearch = () => {
                             <template #body="{ data }">
                                 <div class="d-flex flex-column">
                                     <span class="text-truncate d-inline-block mb-1" v-tooltip.top="data.user.email">{{ data.user.email }}</span>
-                                    <span class="text-muted fs-7">{{ formateDateTime(data.created_at) }}</span>
+                                    <span class="text-muted fs-7">{{ formatDateTime(data.created_at) }}</span>
                                 </div>
                             </template>
                         </Column>
@@ -268,7 +302,7 @@ const onClearSearch = () => {
                             <template #body="{ data }">
                                 <div class="text-center">
                                     <template v-if="data.expires_at">
-                                        {{ formateDate(data.expires_at) }}
+                                        {{ formatDate(data.expires_at) }}
                                     </template>
                                     <template v-else>
                                         -
@@ -287,6 +321,7 @@ const onClearSearch = () => {
                                         variant="text" 
                                         aria-label="Filter" 
                                         rounded
+                                        @click="openDialog('form', data)"
                                     />
                                     <Button 
                                         icon="pi pi-eye" 
@@ -299,8 +334,18 @@ const onClearSearch = () => {
                             </template>
                         </Column>
                     </DataTable>
+
+                    <EmptyData v-if="!subscriptions.length && !loading" />
                 </template>
             </Card>
         </div>
+
+        <SubscriptionFormDialog
+            v-model="dialogVisible.form"
+            :plans="plans"
+            :users="users"
+            :subscription="subscription"
+            @saved="onCloseDialog"
+        />
     </section>
 </template>

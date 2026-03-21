@@ -13,24 +13,23 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('subscription_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('plan_price_id')->nullable();
+            $table->foreignId('plan_price_id')->nullable()->constrained()->nullOnDelete();
 
             $table->decimal('amount', 10, 2);
-            $table->decimal('amount_refunded', 10, 2)->nullable();
-            $table->string('currency', 3);
+            $table->string('currency', 3); // BRL, USD
 
             $table->string('status');
 
-            $table->string('payment_gateway')->nullable();
-            $table->string('payment_method')->nullable();
+            $table->string('payment_gateway')->nullable(); // stripe, manual
+            $table->string('payment_method')->nullable();  // credit_card, pix, boleto
 
             $table->string('gateway_transaction_id')->nullable();
 
             $table->timestamp('paid_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
 
-            $table->json('meta')->nullable(); // resposta do gateway
+            $table->json('meta')->nullable();
 
             $table->timestamps();
         });

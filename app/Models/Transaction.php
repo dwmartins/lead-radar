@@ -6,47 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-/**
- * @property int $id
- * @property int $subscription_id
- * @property int|null $plan_price_id
- * @property numeric $amount
- * @property numeric|null $amount_refunded
- * @property string $currency
- * @property string $status
- * @property string|null $payment_gateway
- * @property string|null $payment_method
- * @property string|null $gateway_transaction_id
- * @property \Illuminate\Support\Carbon|null $paid_at
- * @property \Illuminate\Support\Carbon|null $expires_at
- * @property array<array-key, mixed>|null $meta
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string $formatted_amount
- * @property-read \App\Models\PlanPrice|null $planPrice
- * @property-read \App\Models\Subscription $subscription
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereAmountRefunded($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereCurrency($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereGatewayTransactionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereMeta($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePaidAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePaymentGateway($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePaymentMethod($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction wherePlanPriceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereSubscriptionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereUpdatedAt($value)
- * @mixin \Eloquent
- */
 class Transaction extends Model
 {
+    protected $table = 'transactions';
+
     /**
      * Os atributos que podem ser atribuídos em massa.
      *
@@ -56,14 +19,12 @@ class Transaction extends Model
         'subscription_id',
         'plan_price_id',
         'amount',
-        'amount_refunded',
         'currency',
         'status',
         'payment_gateway',
         'payment_method',
         'gateway_transaction_id',
         'paid_at',
-        'expires_at',
         'meta',
     ];
 
@@ -71,11 +32,9 @@ class Transaction extends Model
      * Atributos que devem ser convertidos.
      */
     protected $casts = [
-        'amount'          => 'decimal:2',
-        'amount_refunded' => 'decimal:2',
-        'paid_at'         => 'datetime',
-        'expires_at'      => 'datetime',
-        'meta'            => 'array',
+        'amount'  => 'decimal:2',
+        'paid_at' => 'datetime',
+        'meta'    => 'array',
     ];
 
     /*
@@ -91,7 +50,6 @@ class Transaction extends Model
 
     public const GATEWAY_STRIPE       = 'stripe';
     public const GATEWAY_MANUAL       = 'manual';
-    public const GATEWAY_SEED         = 'seed';
 
     public const METHOD_CREDIT_CARD = 'credit_card';
     public const METHOD_PIX         = 'pix';
@@ -171,14 +129,6 @@ class Transaction extends Model
     }
 
     /**
-     * Verifica se houve reembolso parcial
-     */
-    public function isPartiallyRefunded(): bool
-    {
-        return $this->amount_refunded > 0 && $this->amount_refunded < $this->amount;
-    }
-
-    /**
      * Marca a transação como paga.
      */
     public function markAsPaid(): void
@@ -207,13 +157,5 @@ class Transaction extends Model
         $this->update([
             'status' => self::STATUS_REFUNDED,
         ]);
-    }
-
-    /**
-     * Verifica se a transação já expirou (ciclo vencido).
-     */
-    public function isExpired(): bool
-    {
-        return $this->expires_at && $this->expires_at->isPast();
     }
 }

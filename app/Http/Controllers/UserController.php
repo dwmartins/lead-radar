@@ -166,4 +166,24 @@ class UserController extends Controller
 
         return response()->json($user);
     }
+
+    /**
+     * Retorna todos os usuários
+     * Parâmetros de consulta:
+     * campos (opcional): lista de campos a serem incluídos, separados por vírgula, por exemplo, id, nome, cidade
+     */
+    public function getAll(Request $request)
+    {
+        $fields = $request->query('fields');
+
+        if($fields) {
+            $fieldsArray = explode(',', $fields);
+        } else {
+            $fieldsArray = ['*'];
+        }
+
+        $users = User::select($fieldsArray)->get();
+
+        return response()->json($users);
+    }
 }

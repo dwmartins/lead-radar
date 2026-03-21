@@ -73,5 +73,26 @@ export default {
     async delete(user_id) {
         const response = await axios.delete(`${API_URL}/user/${user_id}`);
         return response.data;
+    },
+
+    /**
+     * Permite opcionalmente limitar os campos retornados,
+     * 
+     * @param {Array} fields 
+     * @returns {Promise<Object[]>} Lista de usuários retornados pela API.
+     * 
+     * @example
+     * // Buscar apenas campos específicos
+     * getAll(['id', 'name', 'email']);
+     */
+    async getAll(fields = null) {
+        let url = `${API_URL}/user/get-all`;
+
+        if (fields && fields.length) {
+            url += `?fields=${fields.join(',')}`;
+        }
+
+        const response = await axios.get(url);
+        return response.data;
     }
 }
