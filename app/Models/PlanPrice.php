@@ -64,6 +64,9 @@ class PlanPrice extends Model
         'interval_count' => 'integer',
     ];
 
+    public const TYPE_RECURRING = 'recurring';
+    public const TYPE_ONE_TIME  = 'one_time';
+
     /*
     |--------------------------------------------------------------------------
     | RELAÇÕES
@@ -105,7 +108,7 @@ class PlanPrice extends Model
      */
     public function isRecurring(): bool
     {
-        return $this->type === 'recurring';
+        return $this->type === self::TYPE_RECURRING;
     }
 
     /**
@@ -113,6 +116,31 @@ class PlanPrice extends Model
      */
     public function isOneTime(): bool
     {
-        return $this->type === 'one_time';
+        return $this->type === self::TYPE_ONE_TIME;
+    }
+
+    /**
+     * Retorna o tipo (recurring ou one_time)
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * Retorna o rótulo (label) do tipo de preço.
+     *
+     * Tipos suportados:
+     * - recurring  => preço recorrente (assinaturas)
+     * - one_time   => pagamento único
+     *
+     */
+    public function getTypeLabelAttribute(): string
+    {
+        return match ($this->type) {
+            self::TYPE_RECURRING => __('messages.price_recurring'),
+            self::TYPE_ONE_TIME  => __('messages.price_one_time'),
+            default => 'Desconhecido',
+        };
     }
 }

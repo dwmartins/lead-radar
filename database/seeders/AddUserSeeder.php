@@ -34,7 +34,7 @@ class AddUserSeeder extends Seeder
 
             $planPrice = $plan->prices()
                 ->where('currency', 'BRL')
-                ->where('type', 'recurring')
+                ->where('type', PlanPrice::TYPE_RECURRING)
                 ->where('interval', 'month')
                 ->where('interval_count', 1)
                 ->where('is_active', true)
